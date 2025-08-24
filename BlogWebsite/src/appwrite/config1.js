@@ -1,4 +1,4 @@
-import config from "../config/config";
+import config from "../config/config.js";
 import { Client, ID, Databases, Storage, Query} from "appwrite";
 
 export class Service{
@@ -37,7 +37,7 @@ export class Service{
         }
     }
 
-    async updatesPost(slug, {title, content, featuredImage, status}){
+    async updatePost(slug, {title, content, featuredImage, status}){
         try {
             return await this.databases.updateDocument(
                 config.appwriteDatabaseId,
