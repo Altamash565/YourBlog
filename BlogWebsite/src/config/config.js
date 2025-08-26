@@ -7,5 +7,6 @@ const config = {
 }
 
 
+console.log("🔎 Loaded config:", config); // 👈 add this
 
 export default config

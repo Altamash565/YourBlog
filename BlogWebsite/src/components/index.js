@@ -28,5 +28,5 @@ export {
     PostCard,
     AuthLayout,
     Input,
-    Select
+    Select,
 }
