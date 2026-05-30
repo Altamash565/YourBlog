@@ -11,15 +11,14 @@ const authSlice = createSlice({
     reducers: {
         login: (state, action) => {
             state.status = true;
-            state.userData = action.payload.userData;
+            // Support both wrapped {userData} and direct user object payloads
+            state.userData = action.payload?.userData || action.payload;
         },
 
         logout: (state) => {
             state.status = false;
             state.userData = null;
         }
-            
-
     }
 })
 

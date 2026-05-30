@@ -4,17 +4,21 @@ import { Controller } from 'react-hook-form'
 
 export default function RTE({ name, control, label, defaultValue = "" }) {
     return (
-        <div className='w-full '>
-            {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
+        <div className="w-full">
+            {label && (
+                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5 pl-0.5 select-none">
+                    {label}
+                </label>
+            )}
 
             <Controller
                 name={name || "content"}
                 control={control}
-                render={({ field: { onChange } }) => (
+                render={({ field: { onChange, value } }) => (
                     <Editor
-                        initialValue={defaultValue}
+                        tinymceScriptSrc="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"
+                        value={value ?? defaultValue}
                         init={{
-                            initialValue: defaultValue,
                             height: 500,
                             menubar: true,
                             plugins: [
@@ -23,7 +27,6 @@ export default function RTE({ name, control, label, defaultValue = "" }) {
                                 "autolink",
                                 "lists",
                                 "link",
-                                "image",
                                 "charmap",
                                 "preview",
                                 "anchor",
@@ -34,13 +37,11 @@ export default function RTE({ name, control, label, defaultValue = "" }) {
                                 "insertdatetime",
                                 "media",
                                 "table",
-                                "code",
                                 "help",
                                 "wordcount",
-                                "anchor",
                             ],
                             toolbar: [
-                                'undo redo | casechange | styleselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code',
+                                'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code',
                                 'preview media | forecolor backcolor emoticons | help'
                             ],
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'

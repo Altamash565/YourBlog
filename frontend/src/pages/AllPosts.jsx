@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import appwriteService from '../appwrite/config1';
 import { Container, PostCard } from '../components';
 
+import { motion } from 'framer-motion'
+
 function AllPosts() {
     const [posts, setPosts] = useState([]);
     
@@ -14,23 +16,42 @@ function AllPosts() {
     }, [])
 
     return (
-        <div className='w-full py-8'>
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className='w-full py-12'
+        >
             <Container>
-                <div className='flex flex-wrap'>
+                <div className='mb-10 text-center md:text-left'>
+                    <h1 className='text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50'>
+                        All Publications
+                    </h1>
+                    <p className='mt-3 text-lg text-zinc-500 dark:text-zinc-400'>
+                        Explore the complete library of written content and tutorials.
+                    </p>
+                </div>
+
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                     {posts.length > 0 ? (
-                        posts.map((post) => (
-                            <div key={post.$id} className='p-2 w-1/4'>
+                        posts.map((post, idx) => (
+                            <motion.div
+                                key={post.$id}
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                            >
                                 <PostCard {...post} />
-                            </div>
+                            </motion.div>
                         ))
                     ) : (
-                        <div className='w-full text-center py-8'>
-                            <p className='text-gray-500 text-lg'>No posts available</p>
+                        <div className='col-span-full text-center py-16 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl'>
+                            <p className='text-zinc-500 dark:text-zinc-400 text-lg'>No posts available</p>
                         </div>
                     )}
                 </div>
             </Container>
-        </div>
+        </motion.div>
     )
 }
 

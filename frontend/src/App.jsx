@@ -26,14 +26,12 @@ function App() {
   }, [dispatch])
   
   return !loading ? (
-    <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
-      <div className='w-full block'>
-        <Header />
-        <main>
-        TODO:  <Outlet />
-        </main>
-        <Footer />  
-      </div>
+    <div className='min-h-screen flex flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300'>
+      <Header />
+      <main className='flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
+        <Outlet />
+      </main>
+      <Footer />
     </div>
   ) : null
 }

@@ -17,45 +17,76 @@ export class Service{
 
     }
 
+    mapDocument(doc) {
+        if (!doc) return null;
+        console.log("🔍 mapDocument raw keys:", Object.keys(doc).filter(k => !k.startsWith('$')));
+        console.log("🔍 mapDocument featuredimage:", doc.featuredimage, "| featuredImage:", doc.featuredImage);
+        return {
+            ...doc,
+            featuredImage: doc.featuredimage || doc.featuredImage,
+        };
+    }
+
+    mapDocuments(res) {
+        if (!res || !res.documents) return res;
+        return {
+            ...res,
+            documents: res.documents.map((doc) => this.mapDocument(doc))
+        };
+    }
+
     async createPost({title, slug, content, featuredImage, status, userId}){
+        // Validate required fields before hitting the API
+        if (!userId) {
+            throw new Error("Cannot create post: User ID is missing. Please log in again.");
+        }
+        if (!title) {
+            throw new Error("Cannot create post: Title is missing.");
+        }
+        if (!slug) {
+            throw new Error("Cannot create post: Slug is missing.");
+        }
+
         try {
-            return await this.databases.createDocument(
+            const payload = {
+                title,
+                content: content || '',
+                featuredimage: featuredImage,
+                status,
+                userId: String(userId),
+            };
+
+            const response = await this.databases.createDocument(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
                 slug,
-                {
-                    title,
-                    content,
-                    featuredImage,
-                    status,
-                    userId,
-                }
+                payload
             )
+            return this.mapDocument(response);
         } catch (error) {
-            console.log("Appwrite service :: createPost :: error", error);
-            
+            console.error("Appwrite service :: createPost :: error", error);
+            throw error;
         }
     }
 
     async updatePost(slug, {title, content, featuredImage, status}){
         try {
-            return await this.databases.updateDocument(
+            const response = await this.databases.updateDocument(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
                 slug,
                 {
                     title,
                     content,
-                    featuredImage,
+                    featuredimage: featuredImage,
                     status,
                 } 
             )
-            
+            return this.mapDocument(response);
         } catch (error) {
             console.log("Appwrite service :: updatePost :: error", error);
-
+            throw error;
         }
-
     }
 
     async deletePost(slug) {
@@ -68,35 +99,51 @@ export class Service{
             return true
         } catch (error) {
             console.log("Appwrite service :: deletePost :: error", error);
-            return false
+            throw error;
         }
     }
     
     async getPost(slug){
         try {
-            return await this.databases.getDocument(
+            const response = await this.databases.getDocument(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
                 slug
             )
+            return this.mapDocument(response);
         } catch (error) {
             console.log("Appwrite service :: getPost :: error", error);
-            return null
+            throw error;
         }
     }
 
     async getPosts(queries = [Query.equal("status", "active")]){
         try {
-            return await this.databases.listDocuments(
+            const response = await this.databases.listDocuments(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
                 queries,
-                
             )
+            return this.mapDocuments(response);
         } catch (error) {
             console.log("Appwrite service :: getPosts :: error", error);
+            // Fallback: If index on status is missing, fetch all documents directly
+            if (queries && queries.length > 0) {
+                console.log("Appwrite service :: getPosts :: Attempting fallback fetch without queries");
+                try {
+                    const response = await this.databases.listDocuments(
+                        config.appwriteDatabaseId,
+                        config.appwriteCollectionId,
+                        []
+                    )
+                    return this.mapDocuments(response);
+                } catch (fallbackError) {
+                    console.log("Appwrite service :: getPosts fallback :: error", fallbackError);
+                    throw fallbackError;
+                }
+            }
+            throw error;
         }
-
     }
 
     //file upload services
@@ -111,7 +158,7 @@ export class Service{
             return uploadedFile;
         } catch (error) {
             console.log("Appwrite service :: uploadFile :: error", error);
-            return false;
+            throw error;
         }
     }
 

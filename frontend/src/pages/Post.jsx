@@ -4,6 +4,7 @@ import appwriteService from "../appwrite/config1";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
 export default function Post() {
     const [post, setPost] = useState(null);
@@ -33,35 +34,55 @@ export default function Post() {
     };
 
     return post ? (
-        <div className="py-8">
+        <motion.article 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="py-12 px-4 max-w-4xl mx-auto"
+        >
             <Container>
-                <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
+                
+                {/* Author Options Bar */}
+                {isAuthor && (
+                    <div className="flex justify-end gap-3 mb-6">
+                        <Link to={`/edit-post/${post.slug || post.$id}`}>
+                            <Button variant="outline" className="text-sm font-semibold">
+                                Edit Post
+                            </Button>
+                        </Link>
+                        <Button variant="destructive" onClick={deletePost} className="text-sm font-semibold">
+                            Delete Post
+                        </Button>
+                    </div>
+                )}
+
+                {/* Article Header */}
+                <header className="mb-8 text-center md:text-left">
+                    <div className="flex items-center gap-3 mb-4 text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                        <span>Published Article</span>
+                        <span>•</span>
+                        <span>5 min read</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-zinc-900 dark:text-zinc-50 leading-tight">
+                        {post.title}
+                    </h1>
+                </header>
+
+                {/* Featured Image */}
+                <div className="w-full overflow-hidden rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-lg mb-10 bg-zinc-100 dark:bg-zinc-900">
                     <img
                         src={appwriteService.getFilePreview(post.featuredImage)}
                         alt={post.title}
-                        className="rounded-xl"
+                        className="w-full h-auto max-h-[480px] object-cover"
                     />
+                </div>
 
-                    {isAuthor && (
-                        <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.slug || post.$id}`}>
-                                <Button bgColor="bg-green-500" className="mr-3">
-                                    Edit
-                                </Button>
-                            </Link>
-                            <Button bgColor="bg-red-500" onClick={deletePost}>
-                                Delete
-                            </Button>
-                        </div>
-                    )}
-                </div>
-                <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
-                </div>
-                <div className="browser-css">
+                {/* Article Body */}
+                <div className="prose prose-zinc lg:prose-lg dark:prose-invert max-w-none browser-css text-zinc-700 dark:text-zinc-300 leading-relaxed text-lg space-y-6">
                     {parse(post.content)}
-                    </div>
+                </div>
+
             </Container>
-        </div>
+        </motion.article>
     ) : null;
 }
