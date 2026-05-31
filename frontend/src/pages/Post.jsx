@@ -58,12 +58,12 @@ export default function Post() {
 
                 {/* Article Header */}
                 <header className="mb-8 text-center md:text-left">
-                    <div className="flex items-center gap-3 mb-4 text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                    <div className="flex items-center gap-3 mb-3 text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
                         <span>Published Article</span>
                         <span>•</span>
                         <span>5 min read</span>
                     </div>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-zinc-900 dark:text-zinc-50 leading-tight">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-50 leading-snug">
                         {post.title}
                     </h1>
                 </header>
@@ -78,7 +78,7 @@ export default function Post() {
                 </div>
 
                 {/* Article Body */}
-                <div className="prose prose-zinc lg:prose-lg dark:prose-invert max-w-none browser-css text-zinc-700 dark:text-zinc-300 leading-relaxed text-lg space-y-6">
+                <div className="max-w-none text-zinc-700 dark:text-zinc-300 leading-relaxed text-base space-y-4">
                     {parse(post.content)}
                 </div>
 

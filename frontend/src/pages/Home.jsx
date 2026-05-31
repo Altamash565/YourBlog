@@ -26,10 +26,10 @@ function Home() {
         >
             <Container>
                 <div className='mb-10 text-center md:text-left'>
-                    <h1 className='text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50'>
+                    <h1 className='text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50'>
                         Latest Articles
                     </h1>
-                    <p className='mt-3 text-lg text-zinc-500 dark:text-zinc-400'>
+                    <p className='mt-2 text-base text-zinc-500 dark:text-zinc-400'>
                         Discover fresh ideas, guides, and stories written by developers.
                     </p>
                 </div>

@@ -15,6 +15,10 @@ function PostCard({ $id, title, featuredImage }) {
             alt={title} 
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.style.display = 'none';
+            }}
           />
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/20 to-transparent" />
@@ -22,13 +26,13 @@ function PostCard({ $id, title, featuredImage }) {
 
         {/* Card Content */}
         <div className="flex flex-col flex-grow p-5">
-          <span className="mb-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+          <span className="mb-2 text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
             Article
           </span>
-          <h2 className="mb-3 text-xl font-bold leading-snug text-zinc-900 dark:text-zinc-50 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-250 line-clamp-2">
+          <h2 className="mb-3 text-lg font-semibold leading-snug text-zinc-900 dark:text-zinc-50 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-250 line-clamp-2">
             {title}
           </h2>
-          <p className="mt-auto flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+          <p className="mt-auto flex items-center gap-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400">
             Read Post 
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </p>

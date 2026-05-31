@@ -176,10 +176,16 @@ export class Service{
     }
 
     getFilePreview(fileId){
-        return this.bucket.getFilePreview(
-            config.appwriteBucketId,
-            fileId
-        );
+        if (!fileId) return '';
+        try {
+            return this.bucket.getFileView(
+                config.appwriteBucketId,
+                fileId
+            );
+        } catch (e) {
+            // Fallback: construct the URL manually
+            return `${config.appwriteUrl}/storage/buckets/${config.appwriteBucketId}/files/${fileId}/view?project=${config.appwriteProjectId}`;
+        }
     }
 }
 
