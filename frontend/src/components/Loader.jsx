@@ -34,32 +34,13 @@ export function RouteProgressBar() {
 // Center-aligned Loader situated between Header and Footer
 export function GlobalLoader() {
   return (
-    <div className="flex flex-col items-center justify-center py-20 w-full min-h-[50vh]">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
-        className="p-8 rounded-2xl bg-white/60 dark:bg-zinc-900/60 border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-md shadow-xl flex flex-col items-center gap-5 max-w-sm w-full text-center"
-      >
-        <div className="relative w-16 h-16 flex items-center justify-center">
-          {/* Animated Spinner with app logo colors */}
-          <div className="absolute inset-0 rounded-full border-[3px] border-zinc-100 dark:border-zinc-800"></div>
-          <div className="absolute inset-0 rounded-full border-[3px] border-indigo-600 border-t-transparent dark:border-indigo-400 dark:border-t-transparent animate-spin"></div>
-          <Loader2 className="w-6 h-6 text-indigo-600 dark:text-indigo-400 animate-pulse" />
-        </div>
-        <div>
-          <h3 className="font-bold text-zinc-900 dark:text-zinc-50 text-lg tracking-tight">
-            Connecting to YourBlog
-          </h3>
-          <motion.p 
-            animate={{ opacity: [0.5, 1, 0.5] }} 
-            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-            className="text-zinc-500 dark:text-zinc-400 text-sm mt-1"
-          >
-            Please wait while we fetch the latest data...
-          </motion.p>
-        </div>
-      </motion.div>
+    <div className="flex flex-col items-center justify-center py-24 w-full min-h-[45vh] gap-3">
+      {/* Sleek, thin spinner */}
+      <div className="w-7 h-7 rounded-full border-2 border-zinc-200 border-t-indigo-600 dark:border-zinc-800 dark:border-t-indigo-400 animate-spin" />
+      {/* Clean, uppercase typography */}
+      <span className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 tracking-widest uppercase select-none animate-pulse">
+        Loading
+      </span>
     </div>
   )
 }
