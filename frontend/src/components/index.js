@@ -12,7 +12,7 @@ import AuthLayout from './AuthLayout';
 import Button from "./Button";
 import Input from "./Input";
 import Select from "./Select";
-
+import { GlobalLoader, RouteProgressBar, PostCardSkeleton, PostDetailSkeleton, FormSkeleton } from "./Loader";
 
 export {
     Header,
@@ -29,4 +29,9 @@ export {
     AuthLayout,
     Input,
     Select,
-}
+    GlobalLoader,
+    RouteProgressBar,
+    PostCardSkeleton,
+    PostDetailSkeleton,
+    FormSkeleton,
+}

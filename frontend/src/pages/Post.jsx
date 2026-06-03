@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config1";
-import { Button, Container } from "../components";
+import { Button, Container, PostDetailSkeleton } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 export default function Post() {
     const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
     const { slug } = useParams();
     const navigate = useNavigate();
 
@@ -17,9 +18,12 @@ export default function Post() {
 
     useEffect(() => {
         if (slug) {
+            setLoading(true);
             appwriteService.getPost(slug).then((post) => {
                 if (post) setPost(post);
                 else navigate("/");
+            }).finally(() => {
+                setLoading(false);
             });
         } else navigate("/");
     }, [slug, navigate]);
@@ -32,6 +36,14 @@ export default function Post() {
             }
         });
     };
+
+    if (loading) {
+        return (
+            <div className="py-12 px-4 max-w-4xl mx-auto w-full">
+                <PostDetailSkeleton />
+            </div>
+        );
+    }
 
     return post ? (
         <motion.article 
@@ -86,3 +98,4 @@ export default function Post() {
         </motion.article>
     ) : null;
 }
+

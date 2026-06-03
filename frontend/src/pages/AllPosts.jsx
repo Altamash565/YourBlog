@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import appwriteService from '../appwrite/config1';
-import { Container, PostCard } from '../components';
+import { Container, PostCard, PostCardSkeleton } from '../components';
 
 import { motion } from 'framer-motion'
 
 function AllPosts() {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     
     useEffect(() => {
         appwriteService.getPosts().then((posts) => {
             if (posts) {
                 setPosts(posts.documents)
             }
-        })
+        }).finally(() => setLoading(false))
     }, [])
 
     return (
@@ -33,7 +34,11 @@ function AllPosts() {
                 </div>
 
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-                    {posts.length > 0 ? (
+                    {loading ? (
+                        Array.from({ length: 8 }).map((_, idx) => (
+                            <PostCardSkeleton key={idx} />
+                        ))
+                    ) : posts.length > 0 ? (
                         posts.map((post, idx) => (
                             <motion.div
                                 key={post.$id}
