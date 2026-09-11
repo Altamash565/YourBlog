@@ -7,14 +7,16 @@ export class Service{
     bucket;
 
     constructor(){
-        this.client
-        .setEndpoint(config.appwriteUrl)
-        .setProject(config.appwriteProjectId);
+        if (config.appwriteUrl && config.appwriteProjectId) {
+            this.client
+                .setEndpoint(config.appwriteUrl)
+                .setProject(config.appwriteProjectId);
+        } else {
+            console.warn("Appwrite Service: VITE_APPWRITE_URL or VITE_APPWRITE_PROJECT_ID is not configured in .env");
+        }
 
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
-
-
     }
 
     mapDocument(doc) {

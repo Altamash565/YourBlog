@@ -8,9 +8,13 @@ export class AuthService{
 
 
     constructor(){
-        this.client
-            .setEndpoint(config.appwriteUrl)
-            .setProject(config.appwriteProjectId);
+        if (config.appwriteUrl && config.appwriteProjectId) {
+            this.client
+                .setEndpoint(config.appwriteUrl)
+                .setProject(config.appwriteProjectId);
+        } else {
+            console.warn("Appwrite authService: VITE_APPWRITE_URL or VITE_APPWRITE_PROJECT_ID is not configured in .env");
+        }
 
         this.account = new Account(this.client);
         

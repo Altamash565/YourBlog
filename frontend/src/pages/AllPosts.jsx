@@ -9,11 +9,16 @@ function AllPosts() {
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-        appwriteService.getPosts().then((posts) => {
-            if (posts) {
-                setPosts(posts.documents)
-            }
-        }).finally(() => setLoading(false))
+        appwriteService.getPosts()
+            .then((posts) => {
+                if (posts) {
+                    setPosts(posts.documents)
+                }
+            })
+            .catch((err) => {
+                console.error("AllPosts :: getPosts :: error", err)
+            })
+            .finally(() => setLoading(false))
     }, [])
 
     return (

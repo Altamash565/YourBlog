@@ -9,11 +9,16 @@ function Home() {
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-        appwriteService.getPosts().then((posts) => {
-            if (posts) {
-                setPosts(posts.documents)
-            }
-        }).finally(() => setLoading(false))
+        appwriteService.getPosts()
+            .then((posts) => {
+                if (posts) {
+                    setPosts(posts.documents)
+                }
+            })
+            .catch((err) => {
+                console.error("Home :: getPosts :: error", err)
+            })
+            .finally(() => setLoading(false))
     }, [])
 
     return (
