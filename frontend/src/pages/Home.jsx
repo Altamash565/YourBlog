@@ -1,68 +1,69 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 import appwriteService from '../appwrite/config1';
 import { Container, PostCard, PostCardSkeleton } from '../components';
 
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 
 function Home() {
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    
-    useEffect(() => {
-        appwriteService.getPosts()
-            .then((posts) => {
-                if (posts) {
-                    setPosts(posts.documents)
-                }
-            })
-            .catch((err) => {
-                console.error("Home :: getPosts :: error", err)
-            })
-            .finally(() => setLoading(false))
-    }, [])
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    return (
-        <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className='w-full py-12'
-        >
-            <Container>
-                <div className='mb-10 text-center md:text-left'>
-                    <h1 className='text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50'>
-                        Latest Articles
-                    </h1>
-                    <p className='mt-2 text-base text-zinc-500 dark:text-zinc-400'>
-                        Discover fresh ideas, guides, and stories written by developers.
-                    </p>
-                </div>
-                
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-                    {loading ? (
-                        Array.from({ length: 8 }).map((_, idx) => (
-                            <PostCardSkeleton key={idx} />
-                        ))
-                    ) : posts.length > 0 ? (
-                        posts.map((post, idx) => (
-                            <motion.div
-                                key={post.$id}
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                            >
-                                <PostCard {...post} />
-                            </motion.div>
-                        ))
-                    ) : (
-                        <div className='col-span-full text-center py-16 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl'>
-                            <p className='text-zinc-500 dark:text-zinc-400 text-lg'>No posts available at the moment</p>
-                        </div>
-                    )}
-                </div>
-            </Container>
-        </motion.div>
-    )
+  useEffect(() => {
+    appwriteService
+      .getPosts()
+      .then((posts) => {
+        if (posts) {
+          setPosts(posts.documents);
+        }
+      })
+      .catch((err) => {
+        console.error('Home :: getPosts :: error', err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="w-full py-12"
+    >
+      <Container>
+        <div className="mb-10 text-center md:text-left">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+            Latest Articles
+          </h1>
+          <p className="mt-2 text-base text-zinc-500 dark:text-zinc-400">
+            Discover fresh ideas, guides, and stories written by developers.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {loading ? (
+            Array.from({ length: 8 }).map((_, idx) => <PostCardSkeleton key={idx} />)
+          ) : posts.length > 0 ? (
+            posts.map((post, idx) => (
+              <motion.div
+                key={post.$id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+              >
+                <PostCard {...post} />
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-full rounded-2xl border border-dashed border-zinc-200 py-16 text-center dark:border-zinc-800">
+              <p className="text-lg text-zinc-500 dark:text-zinc-400">
+                No posts available at the moment
+              </p>
+            </div>
+          )}
+        </div>
+      </Container>
+    </motion.div>
+  );
 }
 
-export default Home
+export default Home;

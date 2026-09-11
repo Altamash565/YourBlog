@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+.vite/
+package-lock.json
+pnpm-lock.yaml
+.env
+.env.*

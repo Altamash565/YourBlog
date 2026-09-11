@@ -1,12 +1,14 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-html, body {
+html,
+body {
   scrollbar-gutter: stable;
   background-color: #fafafa;
 }
 
 @media (prefers-color-scheme: dark) {
-  html, body {
+  html,
+  body {
     background-color: #09090b;
   }
 }
@@ -31,4 +33,3 @@ html, body {
   background-size: 200% 100%;
   animation: shimmer 1.6s infinite linear;
 }
-

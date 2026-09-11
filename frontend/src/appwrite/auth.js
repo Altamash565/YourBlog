@@ -1,76 +1,67 @@
-import config from "../config/config";
-import {Client, Account, ID} from "appwrite"
+import config from '../config/config';
+import { Client, Account, ID } from 'appwrite';
 
+export class AuthService {
+  client = new Client();
+  account;
 
-export class AuthService{
-    client = new Client();
-    account;
-
-
-    constructor(){
-        if (config.appwriteUrl && config.appwriteProjectId) {
-            this.client
-                .setEndpoint(config.appwriteUrl)
-                .setProject(config.appwriteProjectId);
-        } else {
-            console.warn("Appwrite authService: VITE_APPWRITE_URL or VITE_APPWRITE_PROJECT_ID is not configured in .env");
-        }
-
-        this.account = new Account(this.client);
-        
+  constructor() {
+    if (config.appwriteUrl && config.appwriteProjectId) {
+      this.client.setEndpoint(config.appwriteUrl).setProject(config.appwriteProjectId);
+    } else {
+      console.warn(
+        'Appwrite authService: VITE_APPWRITE_URL or VITE_APPWRITE_PROJECT_ID is not configured in .env'
+      );
     }
 
-    async createAccount({email, password, name}){
-        try {
-            const userAccount = await this.account.create(ID.unique(), email, password, name);
-            if (userAccount) {
-                //call another method
-                return this.login({email, password});
+    this.account = new Account(this.client);
+  }
 
-            } else {
-                return userAccount;
-            }
-        } catch (error) {
-            console.log("Appwrite service :: createAccount :: error", error);
-            throw error;
-        }
+  async createAccount({ email, password, name }) {
+    try {
+      const userAccount = await this.account.create(ID.unique(), email, password, name);
+      if (userAccount) {
+        //call another method
+        return this.login({ email, password });
+      } else {
+        return userAccount;
+      }
+    } catch (error) {
+      console.log('Appwrite service :: createAccount :: error', error);
+      throw error;
+    }
+  }
+
+  async login({ email, password }) {
+    try {
+      return await this.account.createEmailPasswordSession(email, password);
+    } catch (error) {
+      console.log('Appwrite service :: login :: error', error);
+      throw error;
+    }
+  }
+
+  async getCurrentUser() {
+    try {
+      let user = await this.account.get();
+      console.log('user', user);
+      return user;
+    } catch (error) {
+      console.log('Appwrite service :: getCurrentUser :: error', error);
     }
 
-    async login({email, password}){
-        try {
-            return await this.account.createEmailPasswordSession(email, password);
-        } catch (error) {
-            console.log("Appwrite service :: login :: error", error);
-            throw error;
-        }
+    return null;
+  }
+
+  async logout() {
+    try {
+      await this.account.deleteSessions();
+    } catch (error) {
+      console.log('Appwrite service :: logout :: error', error);
     }
-
-    async getCurrentUser() {
-        try {
-            let user = await this.account.get();
-            console.log("user", user);
-            return user;
-            
-        } catch (error) {
-            console.log("Appwrite service :: getCurrentUser :: error", error);
-            
-        }
-
-        return null;
-
-    }
-
-    async logout() {
-        try {
-            await this.account.deleteSessions()
-        } catch (error) {
-            console.log("Appwrite service :: logout :: error", error);
-            
-        }
-    }
+  }
 }
 
 const authService = new AuthService();
 
-export default authService
-
+export default authService;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 function Logo({ width = '45px', className = '' }) {
   return (
@@ -16,10 +16,10 @@ function Logo({ width = '45px', className = '' }) {
           <stop offset="100%" stopColor="#7c3aed" />
         </linearGradient>
       </defs>
-      
+
       {/* Dynamic Background */}
       <rect x="15" y="15" width="70" height="70" rx="20" fill="url(#logo-grad)" />
-      
+
       {/* Pen Tip Icon */}
       <path
         d="M40 50 L50 60 L65 45 M35 65 H45 L65 45 L55 35 L35 55 V65 Z"
@@ -30,7 +30,7 @@ function Logo({ width = '45px', className = '' }) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
-export default Logo
+export default Logo;
