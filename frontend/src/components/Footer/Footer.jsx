@@ -13,10 +13,7 @@ function Footer() {
               to="/"
               className="flex items-center gap-2 transition-transform hover:scale-105"
             >
-              <Logo width="45px" />
-              <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-xl font-bold text-transparent">
-                YourBlog
-              </span>
+              <Logo />
             </Link>
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
               &copy; {new Date().getFullYear()} YourBlog. All Rights Reserved.
@@ -31,7 +28,7 @@ function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Features
@@ -39,7 +36,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Pricing
@@ -47,7 +44,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Affiliate Program
@@ -64,7 +61,7 @@ function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Account
@@ -72,7 +69,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Help
@@ -80,7 +77,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Contact Us
@@ -97,7 +94,7 @@ function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Terms &amp; Conditions
@@ -105,7 +102,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Privacy Policy
@@ -113,7 +110,7 @@ function Footer() {
               </li>
               <li>
                 <Link
-                  className="text-sm transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                  className="text-sm transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
                   to="/"
                 >
                   Licensing

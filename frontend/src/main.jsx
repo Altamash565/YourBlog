@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store/store.js';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { AuthLayout, Login } from './components/index.js';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import './appwriteTest.js';
 
 const Home = lazy(() => import('./pages/Home.jsx'));
@@ -75,7 +76,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Provider>
   </StrictMode>
 );

@@ -1,35 +1,34 @@
 import React from 'react';
 
-function Logo({ width = '45px', className = '' }) {
+function Logo({ className = '' }) {
   return (
-    <svg
-      width={width}
-      height={width}
-      viewBox="0 0 100 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      <defs>
-        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#4f46e5" />
-          <stop offset="100%" stopColor="#7c3aed" />
-        </linearGradient>
-      </defs>
+    <div className={`flex items-center gap-2.5 ${className}`}>
+      {/* Editorial Ink-Quill Minimalist Icon */}
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white shadow-sm transition-transform hover:scale-105 dark:bg-zinc-100 dark:text-zinc-900">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 19l7-7 3 3-7 7-3-3z" />
+          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+          <path d="M2 2l7.586 7.586" />
+          <circle cx="11" cy="11" r="2" />
+        </svg>
+      </div>
 
-      {/* Dynamic Background */}
-      <rect x="15" y="15" width="70" height="70" rx="20" fill="url(#logo-grad)" />
-
-      {/* Pen Tip Icon */}
-      <path
-        d="M40 50 L50 60 L65 45 M35 65 H45 L65 45 L55 35 L35 55 V65 Z"
-        fill="white"
-        stroke="white"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      <span className="font-editorial text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+        Your
+        <span className="font-sans font-semibold text-zinc-500 dark:text-zinc-400">
+          Blog
+        </span>
+      </span>
+    </div>
   );
 }
 

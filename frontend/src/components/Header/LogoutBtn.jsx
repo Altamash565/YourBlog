@@ -13,10 +13,10 @@ function LogoutBtn() {
 
   return (
     <button
-      className="inline-block rounded-full px-6 py-2 duration-200 hover:bg-blue-100"
+      className="cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
       onClick={logoutHandler}
     >
-      Logout
+      Sign out
     </button>
   );
 }

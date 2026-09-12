@@ -1,18 +1,61 @@
 @import 'tailwindcss';
 
-html,
-body {
-  scrollbar-gutter: stable;
-  background-color: #fafafa;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Disable all transitions during theme switch for an instant, clean swap */
+.disable-transitions,
+.disable-transitions *,
+.disable-transitions *::before,
+.disable-transitions *::after {
+  transition-duration: 0s !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #09090b;
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Newsreader', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    scrollbar-gutter: stable;
   }
 }
 
+/* Custom font utilities */
+.font-editorial {
+  font-family: var(--font-serif);
+}
+
+.font-code {
+  font-family: var(--font-mono);
+}
+
+/* Smooth custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+
+/* Shimmer Loading Skeleton Animation */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;

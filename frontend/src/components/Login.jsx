@@ -42,9 +42,7 @@ function Login() {
       >
         {/* Branding Logo */}
         <div className="mb-6 flex justify-center">
-          <span className="inline-block w-full max-w-[80px] transition-transform hover:scale-105">
-            <Logo width="100%" />
-          </span>
+          <Logo />
         </div>
 
         <h2 className="text-center text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -54,7 +52,7 @@ function Login() {
           Don&apos;t have an account?&nbsp;
           <Link
             to="/signup"
-            className="font-semibold text-indigo-600 transition-colors duration-200 hover:text-indigo-500 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300"
+            className="font-semibold text-zinc-900 transition-colors duration-200 hover:text-zinc-700 hover:underline dark:text-zinc-100 dark:hover:text-zinc-300"
           >
             Sign Up
           </Link>
@@ -115,7 +113,7 @@ function Login() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-2.5 font-semibold text-white shadow-lg shadow-indigo-600/10 transition-all duration-200 hover:from-indigo-500 hover:to-violet-500 hover:shadow-indigo-600/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-zinc-900 py-2.5 font-semibold text-white shadow-sm transition-all duration-200 hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             {isSubmitting ? (
               <>

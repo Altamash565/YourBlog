@@ -24,7 +24,7 @@ export function RouteProgressBar() {
           animate={{ width: '100%' }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
-          className="pointer-events-none fixed top-0 right-0 left-0 z-[9999] h-[3.5px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+          className="pointer-events-none fixed top-0 right-0 left-0 z-[9999] h-[3.5px] bg-zinc-900 dark:bg-zinc-100"
         />
       )}
     </AnimatePresence>
@@ -36,7 +36,7 @@ export function GlobalLoader() {
   return (
     <div className="flex min-h-[45vh] w-full flex-col items-center justify-center gap-3 py-24">
       {/* Sleek, thin spinner */}
-      <div className="h-7 w-7 animate-spin rounded-full border-2 border-zinc-200 border-t-indigo-600 dark:border-zinc-800 dark:border-t-indigo-400" />
+      <div className="h-7 w-7 animate-spin rounded-full border-2 border-zinc-200 border-t-zinc-900 dark:border-zinc-800 dark:border-t-zinc-100" />
       {/* Clean, uppercase typography */}
       <span className="animate-pulse text-[11px] font-semibold tracking-widest text-zinc-400 uppercase select-none dark:text-zinc-500">
         Loading
