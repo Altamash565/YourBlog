@@ -1,11 +1,317 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  PanelLeft,
+  Search,
+  Sun,
+  Moon,
+  PenSquare,
+  Compass,
+  FileText,
+  LogOut,
+  User,
+  X,
+  Sparkles,
+  BookOpen,
+  TrendingUp,
+  Tag,
+  ArrowRight,
+} from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
+import { SidebarTrigger } from '@/new-components/ui/sidebar';
+import authService from '@/appwrite/auth';
+import { logout } from '@/store/authSlice';
+import {
+  Button,
+  Input,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Separator,
+} from '@/new-components/ui';
 
-const Navbar = () => {
+export default function Navbar() {
+  const authStatus = useSelector((state) => state.auth.status);
+  const userData = useSelector((state) => state.auth.userData);
+  const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const searchInputRef = useRef(null);
+
+  // Focus search input when mobile search is opened
+  useEffect(() => {
+    if (isMobileSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isMobileSearchOpen]);
+
+  // Global keyboard shortcut (⌘K or Ctrl+K) to focus search
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+        } else {
+          setIsMobileSearchOpen(true);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    navigate(`/all-posts?search=${encodeURIComponent(searchQuery.trim())}`);
+    setIsMobileSearchOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      dispatch(logout());
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  const userInitial = userData?.name
+    ? userData.name.trim().charAt(0).toUpperCase()
+    : 'U';
+
+  const categories = [
+    'Technology',
+    'Design',
+    'Engineering',
+    'AI & Data',
+    'Productivity',
+    'Startups',
+  ];
+
   return (
-    <header className="navbar">
-      {/* Navbar placeholder */}
+    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md transition-colors duration-200 dark:border-zinc-800/80 dark:bg-zinc-950/90">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        
+        {/* ================= LEFT SECTION ================= */}
+        <div className="flex items-center gap-2.5 md:gap-3 flex-1">
+          {/* Official Shadcn Sidebar Trigger (Toggles desktop collapsible & mobile drawer) */}
+          <SidebarTrigger className="-ml-1 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100" />
+
+          {/* Mobile Logo with Name */}
+          <Link
+            to="/"
+            className="md:hidden group flex items-center gap-2 transition-opacity hover:opacity-95"
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
+              <BookOpen className="h-3.5 w-3.5" />
+            </div>
+            <span className="font-editorial text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              YourBlog
+            </span>
+          </Link>
+
+          <Separator orientation="vertical" className="mr-1 h-4 hidden md:block" />
+
+          {/* Desktop Search Bar (Left-aligned like Medium / Hashnode) */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className="relative hidden sm:block w-56 md:w-72 lg:w-80"
+          >
+            <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <Input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search articles..."
+              className="h-9 w-full rounded-lg border-zinc-200 bg-zinc-50/70 pl-8 pr-12 text-xs transition-all focus:bg-white focus:ring-1 focus:ring-zinc-400 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:focus:bg-zinc-900 dark:focus:ring-zinc-700"
+            />
+            {searchQuery ? (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            ) : (
+              <kbd className="pointer-events-none absolute right-2.5 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 rounded border border-zinc-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-zinc-400 select-none md:flex dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            )}
+          </form>
+        </div>
+
+        {/* ================= RIGHT SECTION ================= */}
+        <div className="flex items-center gap-2 sm:gap-3">
+
+          {/* Mobile Search Button Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMobileSearchOpen((prev) => !prev)}
+            className="h-9 w-9 text-zinc-600 sm:hidden dark:text-zinc-400"
+            aria-label="Toggle mobile search"
+          >
+            <Search className="h-4 w-4" />
+          </Button>
+
+          {/* Theme Toggler Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            className="relative h-9 w-9 rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-4 w-4 transition-transform hover:rotate-45" />
+            ) : (
+              <Moon className="h-4 w-4 transition-transform hover:-rotate-12" />
+            )}
+          </Button>
+
+          {/* Write Action Button (When Authenticated) */}
+          {authStatus && (
+            <Button
+              asChild
+              size="sm"
+              variant="ghost"
+              className="hidden gap-1.5 md:flex text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+            >
+              <Link to="/add-post">
+                <PenSquare className="h-3.5 w-3.5" />
+                <span>Write</span>
+              </Link>
+            </Button>
+          )}
+
+          {/* Profile / Signup Button Section */}
+          {!authStatus ? (
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className="hidden sm:inline-flex text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+              >
+                <Link to="/login">Log In</Link>
+              </Button>
+
+              <Button
+                size="sm"
+                asChild
+                className="h-8 rounded-lg bg-zinc-900 px-3 text-xs font-medium text-white shadow-xs hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              >
+                <Link to="/signup">Sign Up</Link>
+              </Button>
+            </div>
+          ) : (
+            /* Authenticated User Profile Dropdown */
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="group relative flex cursor-pointer items-center rounded-full p-0.5 outline-hidden ring-offset-2 transition-all focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600">
+                  <Avatar className="h-8 w-8 transition-transform group-hover:scale-105">
+                    <AvatarFallback className="bg-zinc-900 text-[11px] font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900">
+                      {userInitial}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                align="end"
+                className="z-[100] w-60 border border-zinc-200 bg-white p-2 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
+              >
+                <DropdownMenuLabel className="font-normal px-2 py-1.5">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-semibold leading-none text-zinc-900 dark:text-zinc-100">
+                      {userData?.name || 'Author'}
+                    </p>
+                    <p className="truncate text-xs leading-none text-zinc-500 dark:text-zinc-400">
+                      {userData?.email || 'author@yourblog.com'}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+
+                <DropdownMenuSeparator className="my-1" />
+
+                <DropdownMenuItem
+                  onClick={() => navigate('/add-post')}
+                  className="cursor-pointer gap-2"
+                >
+                  <PenSquare className="h-4 w-4 text-zinc-500" />
+                  <span>Write Article</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => navigate('/all-posts')}
+                  className="cursor-pointer gap-2"
+                >
+                  <FileText className="h-4 w-4 text-zinc-500" />
+                  <span>All Articles</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => navigate('/')}
+                  className="cursor-pointer gap-2"
+                >
+                  <Compass className="h-4 w-4 text-zinc-500" />
+                  <span>Explore Feed</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator className="my-1" />
+
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer gap-2 text-red-600 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:focus:bg-red-950/40"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Search Overlay Bar */}
+      {isMobileSearchOpen && (
+        <div className="border-t border-zinc-200/80 bg-white/95 px-4 py-2.5 sm:hidden dark:border-zinc-800/80 dark:bg-zinc-950/95">
+          <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+            <Input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search articles, topics..."
+              className="h-9 w-full rounded-lg pl-9 pr-8 text-sm"
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={() => setIsMobileSearchOpen(false)}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </form>
+        </div>
+      )}
     </header>
   );
-};
-
-export default Navbar;
+}
