@@ -15,9 +15,26 @@ export class Service {
       );
     }
 
+    try {
+      const savedSession = localStorage.getItem('appwrite_session_id');
+      if (savedSession) {
+        this.client.setSession(savedSession);
+      }
+    } catch (e) {}
+
     this.databases = new Databases(this.client);
     this.bucket = new Storage(this.client);
   }
+
+  ensureSession() {
+    try {
+      const savedSession = localStorage.getItem('appwrite_session_id');
+      if (savedSession && this.client.config?.session !== savedSession) {
+        this.client.setSession(savedSession);
+      }
+    } catch (e) {}
+  }
+
 
   mapDocument(doc) {
     if (!doc) return null;

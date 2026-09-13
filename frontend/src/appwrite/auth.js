@@ -14,7 +14,25 @@ export class AuthService {
       );
     }
 
+    try {
+      const savedSession = localStorage.getItem('appwrite_session_id');
+      if (savedSession) {
+        this.client.setSession(savedSession);
+      }
+    } catch (e) {
+      console.error('Error restoring Appwrite session from localStorage', e);
+    }
+
     this.account = new Account(this.client);
+  }
+
+  ensureSession() {
+    try {
+      const savedSession = localStorage.getItem('appwrite_session_id');
+      if (savedSession && this.client.config?.session !== savedSession) {
+        this.client.setSession(savedSession);
+      }
+    } catch (e) {}
   }
 
   async createAccount({ email, password, name }) {
@@ -34,7 +52,14 @@ export class AuthService {
 
   async login({ email, password }) {
     try {
-      return await this.account.createEmailPasswordSession(email, password);
+      const session = await this.account.createEmailPasswordSession(email, password);
+      if (session?.$id) {
+        this.client.setSession(session.$id);
+        try {
+          localStorage.setItem('appwrite_session_id', session.$id);
+        } catch (e) {}
+      }
+      return session;
     } catch (error) {
       console.log('Appwrite service :: login :: error', error);
       throw error;
@@ -43,14 +68,14 @@ export class AuthService {
 
   async getCurrentUser() {
     try {
+      this.ensureSession();
       let user = await this.account.get();
       console.log('user', user);
       return user;
     } catch (error) {
       console.log('Appwrite service :: getCurrentUser :: error', error);
+      throw error;
     }
-
-    return null;
   }
 
   async logout() {
@@ -58,6 +83,16 @@ export class AuthService {
       await this.account.deleteSessions();
     } catch (error) {
       console.log('Appwrite service :: logout :: error', error);
+    } finally {
+      try {
+        if (this.client.headers) {
+          delete this.client.headers['X-Appwrite-Session'];
+        }
+        if (this.client.config) {
+          this.client.config.session = '';
+        }
+        localStorage.removeItem('appwrite_session_id');
+      } catch (e) {}
     }
   }
 }
@@ -65,3 +100,4 @@ export class AuthService {
 const authService = new AuthService();
 
 export default authService;
+

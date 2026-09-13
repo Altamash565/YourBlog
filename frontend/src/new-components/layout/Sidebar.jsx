@@ -258,7 +258,7 @@ export default function AppSidebar({ ...props }) {
         <SidebarMenu>
           <SidebarMenuItem>
             {authStatus ? (
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton
                     size="lg"

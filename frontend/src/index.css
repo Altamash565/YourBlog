@@ -7,7 +7,7 @@
 .disable-transitions *,
 .disable-transitions *::before,
 .disable-transitions *::after {
-  transition-duration: 0s !important;
+  transition: none !important;
 }
 
 @layer base {
@@ -20,6 +20,25 @@
   html {
     font-family: var(--font-sans);
     scrollbar-gutter: stable;
+    color-scheme: light;
+    scrollbar-color: #d4d4d8 #fafafa;
+  }
+
+  html.dark,
+  .dark {
+    color-scheme: dark !important;
+    scrollbar-color: #3f3f46 #09090b !important;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+  }
+
+  /* Prevent layout shifts when dialogs or sheets lock body scroll */
+  body[data-scroll-locked] {
+    margin-right: 0 !important;
   }
 }
 
@@ -32,28 +51,57 @@
   font-family: var(--font-mono);
 }
 
-/* Smooth custom scrollbar */
+/* Smooth custom scrollbar for WebKit / Chromium browsers */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background-color: #fafafa;
+}
+
+html.dark::-webkit-scrollbar-track,
+.dark::-webkit-scrollbar-track,
+html.dark ::-webkit-scrollbar-track,
+.dark ::-webkit-scrollbar-track {
+  background-color: #09090b !important;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
+  background-color: #d4d4d8;
   border-radius: 9999px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #27272a;
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a1a1aa;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #a1a1aa;
+html.dark::-webkit-scrollbar-thumb,
+.dark::-webkit-scrollbar-thumb,
+html.dark ::-webkit-scrollbar-thumb,
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #3f3f46 !important;
 }
+
+html.dark::-webkit-scrollbar-thumb:hover,
+.dark::-webkit-scrollbar-thumb:hover,
+html.dark ::-webkit-scrollbar-thumb:hover,
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #52525b !important;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #fafafa;
+}
+
+html.dark::-webkit-scrollbar-corner,
+.dark::-webkit-scrollbar-corner,
+html.dark ::-webkit-scrollbar-corner,
+.dark ::-webkit-scrollbar-corner {
+  background-color: #09090b !important;
+}
+
 
 /* Shimmer Loading Skeleton Animation */
 @keyframes shimmer {

@@ -15,7 +15,9 @@ import {
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import authService from '@/appwrite/auth';
-import { logout } from '@/store/authSlice';
+import { ThemeToggle } from '@/new-components/ui/theme-toggle';
+
+
 import {
   Button,
   Avatar,
@@ -100,22 +102,11 @@ function Header() {
             </ul>
 
             <div className="flex items-center gap-3 border-l border-zinc-200 pl-4 dark:border-zinc-800">
-              {/* Theme Toggle Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleTheme}
-                className="h-8 w-8 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-              </Button>
+              {/* Animated Theme Toggle Button */}
+              <ThemeToggle className="h-8 w-8 rounded-lg" />
 
               {/* Guest / User Auth Actions */}
+
               {!authStatus ? (
                 <div className="flex items-center gap-2">
                   <Button variant="ghost" size="sm" asChild>
@@ -135,7 +126,7 @@ function Header() {
                   </Button>
 
                   {/* shadcn User Dropdown Menu */}
-                  <DropdownMenu>
+                  <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
                       <button className="cursor-pointer rounded-full outline-none focus:ring-2 focus:ring-zinc-400/40">
                         <Avatar className="h-8 w-8">

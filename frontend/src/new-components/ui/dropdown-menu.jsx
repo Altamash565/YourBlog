@@ -4,9 +4,10 @@ import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
 
 function DropdownMenu({
+  modal = false,
   ...props
 }) {
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" modal={modal} {...props} />
 }
 
 function DropdownMenuPortal({

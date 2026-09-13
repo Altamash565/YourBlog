@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   PanelLeft,
   Search,
-  Sun,
-  Moon,
   PenSquare,
   Compass,
   FileText,
@@ -18,8 +16,8 @@ import {
   Tag,
   ArrowRight,
 } from 'lucide-react';
-import { useTheme } from '@/context/ThemeContext';
 import { SidebarTrigger } from '@/new-components/ui/sidebar';
+
 import authService from '@/appwrite/auth';
 import { logout } from '@/store/authSlice';
 import {
@@ -35,14 +33,16 @@ import {
   AvatarFallback,
   AvatarImage,
   Separator,
+  ThemeToggle,
 } from '@/new-components/ui';
+
 
 export default function Navbar() {
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData);
-  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+
   const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -103,10 +103,11 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md transition-colors duration-200 dark:border-zinc-800/80 dark:bg-zinc-950/90">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/90">
+      <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
         
         {/* ================= LEFT SECTION ================= */}
+
         <div className="flex items-center gap-2.5 md:gap-3 flex-1">
           {/* Official Shadcn Sidebar Trigger (Toggles desktop collapsible & mobile drawer) */}
           <SidebarTrigger className="-ml-1 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100" />
@@ -170,35 +171,24 @@ export default function Navbar() {
             <Search className="h-4 w-4" />
           </Button>
 
-          {/* Theme Toggler Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="relative h-9 w-9 rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-4 w-4 transition-transform hover:rotate-45" />
-            ) : (
-              <Moon className="h-4 w-4 transition-transform hover:-rotate-12" />
-            )}
-          </Button>
+          {/* Theme Toggler Button (next-themes + animated SolarSwitch) */}
+          <ThemeToggle className="h-9 w-9 rounded-lg border-zinc-200/80 bg-transparent dark:border-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900" />
 
           {/* Write Action Button (When Authenticated) */}
+
           {authStatus && (
             <Button
               asChild
-              size="sm"
-              variant="ghost"
-              className="hidden gap-1.5 md:flex text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+              variant="outline"
+              className="hidden h-9 items-center gap-1.5 rounded-lg border-zinc-200/80 bg-transparent px-3 text-xs font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 md:inline-flex dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100 transition-colors"
             >
               <Link to="/add-post">
-                <PenSquare className="h-3.5 w-3.5" />
+                <PenSquare className="h-4 w-4" />
                 <span>Write</span>
               </Link>
             </Button>
           )}
+
 
           {/* Profile / Signup Button Section */}
           {!authStatus ? (
@@ -222,7 +212,7 @@ export default function Navbar() {
             </div>
           ) : (
             /* Authenticated User Profile Dropdown */
-            <DropdownMenu>
+            <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <button className="group relative flex cursor-pointer items-center rounded-full p-0.5 outline-hidden ring-offset-2 transition-all focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600">
                   <Avatar className="h-8 w-8 transition-transform group-hover:scale-105">

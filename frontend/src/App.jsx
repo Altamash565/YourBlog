@@ -1,15 +1,14 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import authService from './appwrite/auth';
-import { login, logout } from './store/authSlice';
-import { Footer, Header, GlobalLoader, RouteProgressBar } from './components';
+import { login, logout, setAuthResolved } from './store/authSlice';
+import { GlobalLoader } from './components';
 import { Navbar, Sidebar } from './new-components';
 import { SidebarProvider, SidebarInset } from '@/new-components/ui/sidebar';
 import { Outlet } from 'react-router-dom';
 
 function App() {
-  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,31 +18,39 @@ function App() {
         if (userData) {
           dispatch(login({ userData }));
         } else {
+          const hasLocalSession = !!localStorage.getItem('yourblog_user_data');
+          if (!hasLocalSession) {
+            dispatch(logout());
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn('App.jsx :: auth session check:', err);
+        // Only force logout if Appwrite explicitly responds with 401 unauthorized
+        if (err?.code === 401 || err?.type === 'user_unauthorized') {
           dispatch(logout());
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        dispatch(setAuthResolved());
+      });
   }, [dispatch]);
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <RouteProgressBar />
       <Sidebar />
-      <SidebarInset className="min-w-0 bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300">
+      <SidebarInset className="min-w-0 bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
         <Navbar />
-        <main className="mx-auto flex w-full max-w-7xl flex-grow flex-col px-4 py-6 sm:px-6 lg:px-8">
-          {loading ? (
-            <GlobalLoader />
-          ) : (
-            <Suspense fallback={<GlobalLoader />}>
-              <Outlet />
-            </Suspense>
-          )}
+        <main className="flex w-full flex-grow flex-col px-4 py-6 sm:px-6 lg:px-8">
+          <Suspense fallback={<GlobalLoader />}>
+            <Outlet />
+          </Suspense>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </SidebarInset>
     </SidebarProvider>
   );
 }
 
 export default App;
+

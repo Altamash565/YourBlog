@@ -6,8 +6,9 @@ import { Provider } from 'react-redux';
 import store from './store/store.js';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { AuthLayout, Login } from './components/index.js';
-import { ThemeProvider } from './context/ThemeContext.jsx';
+import { ThemeProvider } from '@/new-components/ui/theme-provider';
 import './appwriteTest.js';
+
 
 const Home = lazy(() => import('./pages/Home.jsx'));
 const AddPost = lazy(() => import('./pages/AddPost.jsx'));
