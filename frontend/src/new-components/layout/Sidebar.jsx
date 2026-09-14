@@ -107,8 +107,8 @@ export default function AppSidebar({ ...props }) {
                   className={cn(
                     'relative flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg shadow-xs transition-colors',
                     isCollapsed && isLogoHovered
-                      ? 'bg-zinc-900 text-zinc-100 dark:bg-zinc-800'
-                      : 'bg-blue-600 text-white group-data-[collapsible=icon]:group-hover/brand:bg-zinc-900 group-data-[collapsible=icon]:group-hover/brand:text-zinc-100 dark:group-data-[collapsible=icon]:group-hover/brand:bg-zinc-800'
+                      ? 'bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
+                      : 'bg-blue-600 text-white group-data-[collapsible=icon]:group-hover/brand:bg-zinc-200 group-data-[collapsible=icon]:group-hover/brand:text-zinc-700 dark:group-data-[collapsible=icon]:group-hover/brand:bg-zinc-800 dark:group-data-[collapsible=icon]:group-hover/brand:text-zinc-200'
                   )}
                 >
                   {/* Default: BookOpen logo (Image 1) */}
