@@ -11,6 +11,7 @@ export * from './theme-toggle';
 export * from './theme-provider';
 export * from './badge';
 export * from './card';
+export * from './skeleton';
 export {
   Sidebar as UiSidebar,
   SidebarContent,

@@ -14,7 +14,7 @@ const AddPost = lazy(() => import('./pages/AddPost.jsx'));
 const Signup = lazy(() => import('./pages/Signup.jsx'));
 const EditPost = lazy(() => import('./pages/EditPost.jsx'));
 const Post = lazy(() => import('./pages/Post.jsx'));
-const AllPosts = lazy(() => import('./pages/AllPosts.jsx'));
+const AllPostsV2 = lazy(() => import('./new-pages/AllPostsV2.jsx'));
 
 const router = createBrowserRouter([
   {
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         path: '/all-posts',
         element: (
           <AuthLayout authentication={true}>
-            <AllPosts />
+            <AllPostsV2 />
           </AuthLayout>
         ),
       },
