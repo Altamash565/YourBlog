@@ -5,18 +5,12 @@ import {
   Compass,
   FileText,
   PenSquare,
-  TrendingUp,
   LogOut,
   LogIn,
+  UserPlus,
   BookOpen,
-  Bookmark,
   ChevronsUpDown,
-  ChevronRight,
-  Sparkles,
-  BadgeCheck,
-  CreditCard,
-  Bell,
-  Settings2,
+  PanelLeft,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -28,17 +22,9 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
   SidebarRail,
   useSidebar,
 } from '@/new-components/ui/sidebar';
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from '@/new-components/ui/collapsible';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -48,9 +34,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
 } from '@/new-components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/new-components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/new-components/ui/avatar';
 import authService from '@/appwrite/auth';
 import { logout } from '@/store/authSlice';
+import { cn } from '@/lib/utils';
 
 export default function AppSidebar({ ...props }) {
   const authStatus = useSelector((state) => state.auth.status);
@@ -58,10 +45,9 @@ export default function AppSidebar({ ...props }) {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isMobile } = useSidebar();
-
-  const [articlesOpen, setArticlesOpen] = useState(true);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const { isMobile, state, toggleSidebar } = useSidebar();
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const isCollapsed = state === 'collapsed';
 
   const handleLogout = async () => {
     try {
@@ -93,112 +79,80 @@ export default function AppSidebar({ ...props }) {
       {...props}
     >
       {/* ========================================================================= */}
-      {/* 1. HEADER (WORKSPACE / APP SWITCHER - EXACT SHADCN SPEC)                   */}
+      {/* 1. HEADER (BRANDING / LOGO LINK)                                          */}
       {/* ========================================================================= */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton
-                  size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer transition-all duration-150 active:scale-[0.98]"
-                >
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs transition-transform duration-150 group-hover/menu-item:scale-105">
-                    <BookOpen className="size-4" />
-                  </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">YourBlog</span>
-                    <span className="text-muted-foreground truncate text-xs">
-                      Publishing Platform
-                    </span>
-                  </div>
-                  <ChevronsUpDown className="ml-auto size-4 transition-transform duration-200 [[data-state=open]_&]:rotate-180" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-                align="start"
-                side={isMobile ? 'bottom' : 'right'}
-                sideOffset={4}
+            <SidebarMenuButton
+              size="lg"
+              tooltip={isCollapsed ? 'Expand Sidebar' : undefined}
+              asChild
+              className="cursor-pointer"
+            >
+              <Link
+                to="/"
+                onClick={(e) => {
+                  if (isCollapsed) {
+                    e.preventDefault();
+                    toggleSidebar();
+                  }
+                }}
+                onMouseEnter={() => setIsLogoHovered(true)}
+                onMouseLeave={() => setIsLogoHovered(false)}
+                className="group/brand flex w-full items-center gap-2"
               >
-                <DropdownMenuLabel className="text-muted-foreground text-xs">
-                  Workspace
-                </DropdownMenuLabel>
-                <DropdownMenuItem className="gap-2 p-2">
-                  <div className="flex size-6 items-center justify-center rounded-sm border bg-blue-600 text-white">
-                    <BookOpen className="size-3.5 shrink-0" />
-                  </div>
-                  <span className="font-medium">YourBlog Production</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                {/* Logo Box with Hover Toggle Swap (Zero Blue Corner Bleed) */}
+                <div
+                  className={cn(
+                    'relative flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg shadow-xs transition-colors',
+                    isCollapsed && isLogoHovered
+                      ? 'bg-zinc-900 text-zinc-100 dark:bg-zinc-800'
+                      : 'bg-blue-600 text-white group-data-[collapsible=icon]:group-hover/brand:bg-zinc-900 group-data-[collapsible=icon]:group-hover/brand:text-zinc-100 dark:group-data-[collapsible=icon]:group-hover/brand:bg-zinc-800'
+                  )}
+                >
+                  {/* Default: BookOpen logo (Image 1) */}
+                  <BookOpen
+                    className={cn(
+                      'size-4 transition-all duration-150',
+                      isCollapsed && isLogoHovered ? 'hidden' : 'block',
+                      'group-data-[collapsible=icon]:group-hover/brand:hidden'
+                    )}
+                  />
+
+                  {/* On Hover when Collapsed: PanelLeft sidebar toggle icon (Image 2) */}
+                  <PanelLeft
+                    className={cn(
+                      'size-4 transition-all duration-150',
+                      isCollapsed && isLogoHovered ? 'block' : 'hidden',
+                      'group-data-[collapsible=icon]:group-hover/brand:block'
+                    )}
+                  />
+                </div>
+
+                {/* Brand Text - hidden automatically when collapsed */}
+                <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                  <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
+                    YourBlog
+                  </span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    Publishing Platform
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
       {/* ========================================================================= */}
-      {/* 2. CONTENT (PLATFORM NAV & ACCORDION SUBMENUS)                            */}
+      {/* 2. CONTENT (ACTUAL CODED APPLICATION ROUTES)                              */}
       {/* ========================================================================= */}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
-            {/* Articles with Expandable Submenu (Matching Playground from shadcn) */}
-            <Collapsible
-              asChild
-              open={articlesOpen}
-              onOpenChange={setArticlesOpen}
-              className="group/collapsible"
-            >
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton
-                    tooltip="Articles"
-                    isActive={location.pathname.startsWith('/all-posts')}
-                  >
-                    <FileText className="size-4" />
-                    <span>Articles</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton asChild isActive={isActive('/all-posts')}>
-                        <Link to="/all-posts">
-                          <span>All Stories</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton
-                        asChild
-                        isActive={isActive('/all-posts?filter=trending')}
-                      >
-                        <Link to="/all-posts?filter=trending">
-                          <span>Trending</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    {authStatus && (
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton
-                          asChild
-                          isActive={isActive('/all-posts?filter=saved')}
-                        >
-                          <Link to="/all-posts?filter=saved">
-                            <span>Bookmarks</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    )}
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-
-            {/* Explore */}
+            {/* Explore / Home */}
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Explore" isActive={isActive('/')}>
                 <Link to="/">
@@ -208,7 +162,21 @@ export default function AppSidebar({ ...props }) {
               </SidebarMenuButton>
             </SidebarMenuItem>
 
-            {/* Write Story */}
+            {/* All Articles */}
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                tooltip="All Articles"
+                isActive={isActive('/all-posts')}
+              >
+                <Link to="/all-posts">
+                  <FileText className="size-4" />
+                  <span>All Articles</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            {/* Write Story (Navigates to /add-post, protected route) */}
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
@@ -221,61 +189,24 @@ export default function AppSidebar({ ...props }) {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-
-            {/* Settings with Expandable Submenu */}
-            <Collapsible
-              asChild
-              open={settingsOpen}
-              onOpenChange={setSettingsOpen}
-              className="group/collapsible"
-            >
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip="Settings">
-                    <Settings2 className="size-4" />
-                    <span>Settings</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton asChild>
-                        <Link to={authStatus ? '/all-posts' : '/login'}>
-                          <span>General</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton asChild>
-                        <Link to={authStatus ? '/all-posts' : '/login'}>
-                          <span>Account & Security</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
 
       {/* ========================================================================= */}
-      {/* 3. FOOTER (USER MENU - EXACT SHADCN SPEC FROM IMAGE 2 & 3)               */}
+      {/* 3. FOOTER (AUTH & PROFILE CONTROLS)                                       */}
       {/* ========================================================================= */}
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            {authStatus ? (
+          {authStatus ? (
+            <SidebarMenuItem>
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton
                     size="lg"
-                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer transition-all duration-150 active:scale-[0.98]"
+                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src="" alt={userName} />
                       <AvatarFallback className="rounded-lg bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
                         {userInitial}
                       </AvatarFallback>
@@ -314,63 +245,54 @@ export default function AppSidebar({ ...props }) {
                   <DropdownMenuGroup>
                     <DropdownMenuItem
                       onClick={() => navigate('/add-post')}
-                      className="cursor-pointer"
+                      className="cursor-pointer gap-2"
                     >
-                      <Sparkles className="size-4" />
-                      <span>Upgrade to Pro</span>
+                      <PenSquare className="size-4" />
+                      <span>Write Story</span>
                     </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
                     <DropdownMenuItem
                       onClick={() => navigate('/all-posts')}
-                      className="cursor-pointer"
+                      className="cursor-pointer gap-2"
                     >
-                      <BadgeCheck className="size-4" />
-                      <span>Account</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => navigate('/all-posts?filter=saved')}
-                      className="cursor-pointer"
-                    >
-                      <CreditCard className="size-4" />
-                      <span>Billing</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => {}} className="cursor-pointer">
-                      <Bell className="size-4" />
-                      <span>Notifications</span>
+                      <FileText className="size-4" />
+                      <span>All Articles</span>
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="cursor-pointer text-red-600 focus:bg-red-50 dark:text-red-400 dark:focus:bg-red-950/40"
+                    className="cursor-pointer gap-2 text-red-600 focus:bg-red-50 dark:text-red-400 dark:focus:bg-red-950/40"
                   >
                     <LogOut className="size-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
-              <SidebarMenuButton
-                size="lg"
-                asChild
-                className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              >
-                <Link to="/login">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900">
+            </SidebarMenuItem>
+          ) : (
+            <>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip="Log In" isActive={isActive('/login')}>
+                  <Link to="/login">
                     <LogIn className="size-4" />
-                  </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">Sign In</span>
-                    <span className="text-muted-foreground truncate text-xs">
-                      Join the community
-                    </span>
-                  </div>
-                </Link>
-              </SidebarMenuButton>
-            )}
-          </SidebarMenuItem>
+                    <span>Log In</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  tooltip="Sign Up"
+                  isActive={isActive('/signup')}
+                >
+                  <Link to="/signup">
+                    <UserPlus className="size-4" />
+                    <span>Sign Up</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </>
+          )}
         </SidebarMenu>
       </SidebarFooter>
 

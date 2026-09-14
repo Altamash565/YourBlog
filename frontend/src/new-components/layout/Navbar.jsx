@@ -16,7 +16,8 @@ import {
   Tag,
   ArrowRight,
 } from 'lucide-react';
-import { SidebarTrigger } from '@/new-components/ui/sidebar';
+import { SidebarTrigger, useSidebar } from '@/new-components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 import authService from '@/appwrite/auth';
 import { logout } from '@/store/authSlice';
@@ -37,6 +38,9 @@ import {
 } from '@/new-components/ui';
 
 export default function Navbar() {
+  const { state, isMobile } = useSidebar();
+  const isCollapsed = state === 'collapsed';
+
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData);
   const navigate = useNavigate();
@@ -105,8 +109,13 @@ export default function Navbar() {
         {/* ================= LEFT SECTION ================= */}
 
         <div className="flex flex-1 items-center gap-2.5 md:gap-3">
-          {/* Official Shadcn Sidebar Trigger (Toggles desktop collapsible & mobile drawer) */}
-          <SidebarTrigger className="-ml-1 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" />
+          {/* Official Shadcn Sidebar Trigger - hidden on desktop when sidebar is collapsed */}
+          <SidebarTrigger
+            className={cn(
+              '-ml-1 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100',
+              !isMobile && isCollapsed && 'hidden'
+            )}
+          />
 
           {/* Mobile Logo with Name */}
           <Link
@@ -121,7 +130,9 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <Separator orientation="vertical" className="mr-1 hidden h-4 md:block" />
+          {!isMobile && !isCollapsed && (
+            <Separator orientation="vertical" className="mr-1 hidden h-4 md:block" />
+          )}
 
           {/* Desktop Search Bar (Left-aligned like Medium / Hashnode) */}
           <form
