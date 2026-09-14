@@ -118,10 +118,7 @@ export default function Navbar() {
           />
 
           {/* Mobile Logo with Name */}
-          <Link
-            to="/"
-            className="group flex items-center gap-2 transition-opacity hover:opacity-95 md:hidden"
-          >
+          <Link to="/" className="flex items-center gap-2 md:hidden">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
               <BookOpen className="h-3.5 w-3.5" />
             </div>
@@ -146,7 +143,7 @@ export default function Navbar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search articles..."
-              className="h-9 w-full rounded-lg border-zinc-200 bg-zinc-50/70 pr-12 pl-8 text-xs transition-all focus:bg-white focus:ring-1 focus:ring-zinc-400 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:focus:bg-zinc-900 dark:focus:ring-zinc-700"
+              className="h-9 w-full rounded-lg border-zinc-200 bg-zinc-50/70 pr-12 pl-8 text-xs focus:bg-white focus:ring-1 focus:ring-zinc-400 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:focus:bg-zinc-900 dark:focus:ring-zinc-700"
             />
             {searchQuery ? (
               <button
@@ -186,7 +183,7 @@ export default function Navbar() {
             <Button
               asChild
               variant="outline"
-              className="hidden h-9 items-center gap-1.5 rounded-lg border-zinc-200/80 bg-transparent px-3 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 md:inline-flex dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+              className="hidden h-9 items-center gap-1.5 rounded-lg border-zinc-200/80 bg-transparent px-3 text-xs font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 md:inline-flex dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
             >
               <Link to="/add-post">
                 <PenSquare className="h-4 w-4" />
@@ -219,8 +216,8 @@ export default function Navbar() {
             /* Authenticated User Profile Dropdown */
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <button className="group relative flex cursor-pointer items-center rounded-full p-0.5 ring-offset-2 outline-hidden transition-all focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600">
-                  <Avatar className="h-8 w-8 transition-transform group-hover:scale-105">
+                <button className="relative flex cursor-pointer items-center rounded-full p-0.5 ring-offset-2 outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600">
+                  <Avatar className="h-8 w-8">
                     <AvatarFallback className="bg-zinc-900 text-[11px] font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900">
                       {userInitial}
                     </AvatarFallback>
