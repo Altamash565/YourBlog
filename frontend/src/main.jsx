@@ -9,7 +9,7 @@ import { AuthLayout, Login } from './components/index.js';
 import { ThemeProvider } from '@/new-components/ui/theme-provider';
 import './appwriteTest.js';
 
-const Home = lazy(() => import('./pages/Home.jsx'));
+const HomeV2 = lazy(() => import('./new-pages/HomeV2.jsx'));
 const AddPost = lazy(() => import('./pages/AddPost.jsx'));
 const Signup = lazy(() => import('./pages/Signup.jsx'));
 const EditPost = lazy(() => import('./pages/EditPost.jsx'));
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: <HomeV2 />,
       },
       {
         path: '/login',

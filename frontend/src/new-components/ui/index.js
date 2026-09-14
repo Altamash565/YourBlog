@@ -9,6 +9,8 @@ export * from './collapsible';
 export * from './Loader';
 export * from './theme-toggle';
 export * from './theme-provider';
+export * from './badge';
+export * from './card';
 export {
   Sidebar as UiSidebar,
   SidebarContent,

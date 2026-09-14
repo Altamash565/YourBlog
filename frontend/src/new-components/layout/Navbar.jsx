@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   PanelLeft,
@@ -45,12 +45,22 @@ export default function Navbar() {
   const userData = useSelector((state) => state.auth.userData);
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isHome = location.pathname === '/';
 
   const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const searchInputRef = useRef(null);
+
+  // Sync searchQuery with URL params when on Home page
+  useEffect(() => {
+    if (isHome) {
+      const q = searchParams.get('search') || '';
+      setSearchQuery(q);
+    }
+  }, [searchParams, isHome]);
 
   // Focus search input when mobile search is opened
   useEffect(() => {
@@ -75,10 +85,40 @@ export default function Navbar() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+    if (isHome) {
+      if (value) {
+        setSearchParams({ search: value }, { replace: true });
+      } else {
+        setSearchParams({}, { replace: true });
+      }
+    }
+  };
+
+  const handleSearchClear = () => {
+    setSearchQuery('');
+    if (isHome) {
+      setSearchParams({}, { replace: true });
+    }
+  };
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
-    navigate(`/all-posts?search=${encodeURIComponent(searchQuery.trim())}`);
+    const trimmed = searchQuery.trim();
+    if (isHome) {
+      if (trimmed) {
+        setSearchParams({ search: trimmed });
+      } else {
+        setSearchParams({});
+      }
+    } else {
+      if (trimmed) {
+        navigate(`/?search=${encodeURIComponent(trimmed)}`);
+      } else {
+        navigate('/');
+      }
+    }
     setIsMobileSearchOpen(false);
   };
 
@@ -141,15 +181,15 @@ export default function Navbar() {
               ref={searchInputRef}
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Search articles..."
               className="h-9 w-full rounded-lg border-zinc-200 bg-zinc-50/70 pr-12 pl-8 text-xs focus:bg-white focus:ring-1 focus:ring-zinc-400 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:focus:bg-zinc-900 dark:focus:ring-zinc-700"
             />
             {searchQuery ? (
               <button
                 type="button"
-                onClick={() => setSearchQuery('')}
-                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                onClick={handleSearchClear}
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 cursor-pointer text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -289,15 +329,15 @@ export default function Navbar() {
             <Input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Search articles, topics..."
               className="h-9 w-full rounded-lg pr-8 pl-9 text-sm"
               autoFocus
             />
             <button
               type="button"
-              onClick={() => setIsMobileSearchOpen(false)}
-              className="absolute top-1/2 right-2.5 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              onClick={handleSearchClear}
+              className="absolute top-1/2 right-2.5 -translate-y-1/2 cursor-pointer p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
             >
               <X className="h-4 w-4" />
             </button>
