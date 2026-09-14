@@ -3,32 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
-// Elegant Route Progress Bar at the top of the screen
+// Route progress bar disabled across website
 export function RouteProgressBar() {
-  const location = useLocation();
-  const [animating, setAnimating] = useState(false);
-
-  useEffect(() => {
-    setAnimating(true);
-    const timer = setTimeout(() => {
-      setAnimating(false);
-    }, 600); // animate for 600ms
-    return () => clearTimeout(timer);
-  }, [location.pathname]);
-
-  return (
-    <AnimatePresence>
-      {animating && (
-        <motion.div
-          initial={{ width: '0%', opacity: 1 }}
-          animate={{ width: '100%' }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
-          className="pointer-events-none fixed top-0 right-0 left-0 z-[9999] h-[3.5px] bg-zinc-900 dark:bg-zinc-100"
-        />
-      )}
-    </AnimatePresence>
-  );
+  return null;
 }
 
 // Center-aligned Loader situated between Header and Footer

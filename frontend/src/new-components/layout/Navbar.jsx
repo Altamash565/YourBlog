@@ -36,7 +36,6 @@ import {
   ThemeToggle,
 } from '@/new-components/ui';
 
-
 export default function Navbar() {
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData);
@@ -89,9 +88,7 @@ export default function Navbar() {
     }
   };
 
-  const userInitial = userData?.name
-    ? userData.name.trim().charAt(0).toUpperCase()
-    : 'U';
+  const userInitial = userData?.name ? userData.name.trim().charAt(0).toUpperCase() : 'U';
 
   const categories = [
     'Technology',
@@ -105,17 +102,16 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/90 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/90">
       <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
-        
         {/* ================= LEFT SECTION ================= */}
 
-        <div className="flex items-center gap-2.5 md:gap-3 flex-1">
+        <div className="flex flex-1 items-center gap-2.5 md:gap-3">
           {/* Official Shadcn Sidebar Trigger (Toggles desktop collapsible & mobile drawer) */}
-          <SidebarTrigger className="-ml-1 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100" />
+          <SidebarTrigger className="-ml-1 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" />
 
           {/* Mobile Logo with Name */}
           <Link
             to="/"
-            className="md:hidden group flex items-center gap-2 transition-opacity hover:opacity-95"
+            className="group flex items-center gap-2 transition-opacity hover:opacity-95 md:hidden"
           >
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
               <BookOpen className="h-3.5 w-3.5" />
@@ -125,32 +121,32 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <Separator orientation="vertical" className="mr-1 h-4 hidden md:block" />
+          <Separator orientation="vertical" className="mr-1 hidden h-4 md:block" />
 
           {/* Desktop Search Bar (Left-aligned like Medium / Hashnode) */}
           <form
             onSubmit={handleSearchSubmit}
-            className="relative hidden sm:block w-56 md:w-72 lg:w-80"
+            className="relative hidden w-56 sm:block md:w-72 lg:w-80"
           >
-            <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
+            <Search className="absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
             <Input
               ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search articles..."
-              className="h-9 w-full rounded-lg border-zinc-200 bg-zinc-50/70 pl-8 pr-12 text-xs transition-all focus:bg-white focus:ring-1 focus:ring-zinc-400 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:focus:bg-zinc-900 dark:focus:ring-zinc-700"
+              className="h-9 w-full rounded-lg border-zinc-200 bg-zinc-50/70 pr-12 pl-8 text-xs transition-all focus:bg-white focus:ring-1 focus:ring-zinc-400 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/60 dark:focus:bg-zinc-900 dark:focus:ring-zinc-700"
             />
             {searchQuery ? (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
             ) : (
-              <kbd className="pointer-events-none absolute right-2.5 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 rounded border border-zinc-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-zinc-400 select-none md:flex dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500">
+              <kbd className="pointer-events-none absolute top-1/2 right-2.5 hidden -translate-y-1/2 items-center gap-0.5 rounded border border-zinc-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-zinc-400 select-none md:flex dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-500">
                 <span className="text-xs">⌘</span>K
               </kbd>
             )}
@@ -159,7 +155,6 @@ export default function Navbar() {
 
         {/* ================= RIGHT SECTION ================= */}
         <div className="flex items-center gap-2 sm:gap-3">
-
           {/* Mobile Search Button Toggle */}
           <Button
             variant="ghost"
@@ -172,7 +167,7 @@ export default function Navbar() {
           </Button>
 
           {/* Theme Toggler Button (next-themes + animated SolarSwitch) */}
-          <ThemeToggle className="h-9 w-9 rounded-lg border-zinc-200/80 bg-transparent dark:border-zinc-800/80 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900" />
+          <ThemeToggle className="h-9 w-9 rounded-lg border-zinc-200/80 bg-transparent text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900" />
 
           {/* Write Action Button (When Authenticated) */}
 
@@ -180,7 +175,7 @@ export default function Navbar() {
             <Button
               asChild
               variant="outline"
-              className="hidden h-9 items-center gap-1.5 rounded-lg border-zinc-200/80 bg-transparent px-3 text-xs font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 md:inline-flex dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100 transition-colors"
+              className="hidden h-9 items-center gap-1.5 rounded-lg border-zinc-200/80 bg-transparent px-3 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 md:inline-flex dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
             >
               <Link to="/add-post">
                 <PenSquare className="h-4 w-4" />
@@ -189,7 +184,6 @@ export default function Navbar() {
             </Button>
           )}
 
-
           {/* Profile / Signup Button Section */}
           {!authStatus ? (
             <div className="flex items-center gap-1.5 sm:gap-2">
@@ -197,7 +191,7 @@ export default function Navbar() {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden sm:inline-flex text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                className="hidden text-xs font-medium text-zinc-700 hover:bg-zinc-100 sm:inline-flex dark:text-zinc-300 dark:hover:bg-zinc-900"
               >
                 <Link to="/login">Log In</Link>
               </Button>
@@ -214,7 +208,7 @@ export default function Navbar() {
             /* Authenticated User Profile Dropdown */
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <button className="group relative flex cursor-pointer items-center rounded-full p-0.5 outline-hidden ring-offset-2 transition-all focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600">
+                <button className="group relative flex cursor-pointer items-center rounded-full p-0.5 ring-offset-2 outline-hidden transition-all focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600">
                   <Avatar className="h-8 w-8 transition-transform group-hover:scale-105">
                     <AvatarFallback className="bg-zinc-900 text-[11px] font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900">
                       {userInitial}
@@ -227,9 +221,9 @@ export default function Navbar() {
                 align="end"
                 className="z-[100] w-60 border border-zinc-200 bg-white p-2 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
               >
-                <DropdownMenuLabel className="font-normal px-2 py-1.5">
+                <DropdownMenuLabel className="px-2 py-1.5 font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-semibold leading-none text-zinc-900 dark:text-zinc-100">
+                    <p className="text-sm leading-none font-semibold text-zinc-900 dark:text-zinc-100">
                       {userData?.name || 'Author'}
                     </p>
                     <p className="truncate text-xs leading-none text-zinc-500 dark:text-zinc-400">
@@ -283,19 +277,19 @@ export default function Navbar() {
       {isMobileSearchOpen && (
         <div className="border-t border-zinc-200/80 bg-white/95 px-4 py-2.5 sm:hidden dark:border-zinc-800/80 dark:bg-zinc-950/95">
           <form onSubmit={handleSearchSubmit} className="relative flex items-center">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-400" />
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search articles, topics..."
-              className="h-9 w-full rounded-lg pl-9 pr-8 text-sm"
+              className="h-9 w-full rounded-lg pr-8 pl-9 text-sm"
               autoFocus
             />
             <button
               type="button"
               onClick={() => setIsMobileSearchOpen(false)}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              className="absolute top-1/2 right-2.5 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
             >
               <X className="h-4 w-4" />
             </button>

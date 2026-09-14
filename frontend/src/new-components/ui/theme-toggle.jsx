@@ -17,11 +17,7 @@ function ThemeToggle({ className }) {
 
   if (!mounted) {
     return (
-      <Button
-        className={cn('px-2.5', className)}
-        variant="outline"
-        size="icon"
-      >
+      <Button className={cn('px-2.5', className)} variant="outline" size="icon">
         <span className="size-5" />
       </Button>
     );

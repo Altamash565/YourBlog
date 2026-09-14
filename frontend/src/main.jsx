@@ -9,7 +9,6 @@ import { AuthLayout, Login } from './components/index.js';
 import { ThemeProvider } from '@/new-components/ui/theme-provider';
 import './appwriteTest.js';
 
-
 const Home = lazy(() => import('./pages/Home.jsx'));
 const AddPost = lazy(() => import('./pages/AddPost.jsx'));
 const Signup = lazy(() => import('./pages/Signup.jsx'));

@@ -10,7 +10,6 @@ export * from './Loader';
 export * from './theme-toggle';
 export * from './theme-provider';
 export {
-
   Sidebar as UiSidebar,
   SidebarContent,
   SidebarFooter,

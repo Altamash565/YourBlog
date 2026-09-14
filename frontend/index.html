@@ -8,9 +8,12 @@
 
     <!-- Google Fonts: Plus Jakarta Sans, Newsreader & JetBrains Mono -->
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..74,400..800;1,6..74,400..800&family=Plus+Jakarta+Sans:ital,opsz,wght@0,8..18,200..800;1,8..18,200..800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..74,400..800;1,6..74,400..800&family=Plus+Jakarta+Sans:ital,opsz,wght@0,8..18,200..800;1,8..18,200..800&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Instant Theme Script to prevent Flash of Unstyled Content (FOUC) on refresh -->
     <script>
@@ -18,7 +21,11 @@
         try {
           var saved = localStorage.getItem('theme');
           var prefDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (saved === 'dark' || (!saved && prefDark) || (saved === 'system' && prefDark)) {
+          if (
+            saved === 'dark' ||
+            (!saved && prefDark) ||
+            (saved === 'system' && prefDark)
+          ) {
             document.documentElement.classList.add('dark');
             document.documentElement.style.backgroundColor = '#09090b';
             document.documentElement.style.colorScheme = 'dark';
@@ -27,12 +34,13 @@
             document.documentElement.style.backgroundColor = '#fafafa';
             document.documentElement.style.colorScheme = 'light';
           }
-
         } catch (e) {}
       })();
     </script>
   </head>
-  <body class="bg-zinc-50 text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white dark:bg-zinc-950 dark:text-zinc-100 dark:selection:bg-zinc-100 dark:selection:text-zinc-900">
+  <body
+    class="bg-zinc-50 text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white dark:bg-zinc-950 dark:text-zinc-100 dark:selection:bg-zinc-100 dark:selection:text-zinc-900"
+  >
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

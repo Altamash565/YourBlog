@@ -48,11 +48,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
 } from '@/new-components/ui/dropdown-menu';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/new-components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/new-components/ui/avatar';
 import authService from '@/appwrite/auth';
 import { logout } from '@/store/authSlice';
 
@@ -86,14 +82,16 @@ export default function AppSidebar({ ...props }) {
     return location.pathname === pathPart && !location.search;
   };
 
-  const userInitial = userData?.name
-    ? userData.name.trim().charAt(0).toUpperCase()
-    : 'U';
+  const userInitial = userData?.name ? userData.name.trim().charAt(0).toUpperCase() : 'U';
   const userName = userData?.name || 'Creator';
   const userEmail = userData?.email || 'creator@yourblog.com';
 
   return (
-    <Sidebar collapsible="icon" className="border-zinc-200/80 dark:border-zinc-800/80" {...props}>
+    <Sidebar
+      collapsible="icon"
+      className="border-zinc-200/80 dark:border-zinc-800/80"
+      {...props}
+    >
       {/* ========================================================================= */}
       {/* 1. HEADER (WORKSPACE / APP SWITCHER - EXACT SHADCN SPEC)                   */}
       {/* ========================================================================= */}
@@ -104,14 +102,16 @@ export default function AppSidebar({ ...props }) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground active:scale-[0.98] transition-all duration-150 cursor-pointer"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer transition-all duration-150 active:scale-[0.98]"
                 >
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs transition-transform duration-150 group-hover/menu-item:scale-105">
                     <BookOpen className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">YourBlog</span>
-                    <span className="truncate text-xs text-muted-foreground">Publishing Platform</span>
+                    <span className="text-muted-foreground truncate text-xs">
+                      Publishing Platform
+                    </span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4 transition-transform duration-200 [[data-state=open]_&]:rotate-180" />
                 </SidebarMenuButton>
@@ -122,7 +122,7 @@ export default function AppSidebar({ ...props }) {
                 side={isMobile ? 'bottom' : 'right'}
                 sideOffset={4}
               >
-                <DropdownMenuLabel className="text-xs text-muted-foreground">
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
                   Workspace
                 </DropdownMenuLabel>
                 <DropdownMenuItem className="gap-2 p-2">
@@ -172,7 +172,10 @@ export default function AppSidebar({ ...props }) {
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     <SidebarMenuSubItem>
-                      <SidebarMenuSubButton asChild isActive={isActive('/all-posts?filter=trending')}>
+                      <SidebarMenuSubButton
+                        asChild
+                        isActive={isActive('/all-posts?filter=trending')}
+                      >
                         <Link to="/all-posts?filter=trending">
                           <span>Trending</span>
                         </Link>
@@ -180,7 +183,10 @@ export default function AppSidebar({ ...props }) {
                     </SidebarMenuSubItem>
                     {authStatus && (
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton asChild isActive={isActive('/all-posts?filter=saved')}>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={isActive('/all-posts?filter=saved')}
+                        >
                           <Link to="/all-posts?filter=saved">
                             <span>Bookmarks</span>
                           </Link>
@@ -204,7 +210,11 @@ export default function AppSidebar({ ...props }) {
 
             {/* Write Story */}
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Write Story" isActive={isActive('/add-post')}>
+              <SidebarMenuButton
+                asChild
+                tooltip="Write Story"
+                isActive={isActive('/add-post')}
+              >
                 <Link to="/add-post">
                   <PenSquare className="size-4" />
                   <span>Write Story</span>
@@ -262,17 +272,19 @@ export default function AppSidebar({ ...props }) {
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton
                     size="lg"
-                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground active:scale-[0.98] transition-all duration-150 cursor-pointer"
+                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer transition-all duration-150 active:scale-[0.98]"
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage src="" alt={userName} />
-                      <AvatarFallback className="rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-medium">
+                      <AvatarFallback className="rounded-lg bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
                         {userInitial}
                       </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">{userName}</span>
-                      <span className="truncate text-xs text-muted-foreground">{userEmail}</span>
+                      <span className="text-muted-foreground truncate text-xs">
+                        {userEmail}
+                      </span>
                     </div>
                     <ChevronsUpDown className="ml-auto size-4 transition-transform duration-200 [[data-state=open]_&]:rotate-180" />
                   </SidebarMenuButton>
@@ -286,30 +298,41 @@ export default function AppSidebar({ ...props }) {
                   <DropdownMenuLabel className="p-0 font-normal">
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                       <Avatar className="h-8 w-8 rounded-lg">
-                        <AvatarFallback className="rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-medium">
+                        <AvatarFallback className="rounded-lg bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
                           {userInitial}
                         </AvatarFallback>
                       </Avatar>
                       <div className="grid flex-1 text-left text-sm leading-tight">
                         <span className="truncate font-semibold">{userName}</span>
-                        <span className="truncate text-xs text-muted-foreground">{userEmail}</span>
+                        <span className="text-muted-foreground truncate text-xs">
+                          {userEmail}
+                        </span>
                       </div>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => navigate('/add-post')} className="cursor-pointer">
+                    <DropdownMenuItem
+                      onClick={() => navigate('/add-post')}
+                      className="cursor-pointer"
+                    >
                       <Sparkles className="size-4" />
                       <span>Upgrade to Pro</span>
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => navigate('/all-posts')} className="cursor-pointer">
+                    <DropdownMenuItem
+                      onClick={() => navigate('/all-posts')}
+                      className="cursor-pointer"
+                    >
                       <BadgeCheck className="size-4" />
                       <span>Account</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/all-posts?filter=saved')} className="cursor-pointer">
+                    <DropdownMenuItem
+                      onClick={() => navigate('/all-posts?filter=saved')}
+                      className="cursor-pointer"
+                    >
                       <CreditCard className="size-4" />
                       <span>Billing</span>
                     </DropdownMenuItem>
@@ -321,7 +344,7 @@ export default function AppSidebar({ ...props }) {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="cursor-pointer text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-950/40"
+                    className="cursor-pointer text-red-600 focus:bg-red-50 dark:text-red-400 dark:focus:bg-red-950/40"
                   >
                     <LogOut className="size-4" />
                     <span>Log out</span>
@@ -340,7 +363,9 @@ export default function AppSidebar({ ...props }) {
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">Sign In</span>
-                    <span className="truncate text-xs text-muted-foreground">Join the community</span>
+                    <span className="text-muted-foreground truncate text-xs">
+                      Join the community
+                    </span>
                   </div>
                 </Link>
               </SidebarMenuButton>

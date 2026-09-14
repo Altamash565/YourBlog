@@ -45,7 +45,11 @@ export function SidebarProvider({ children }) {
     const handleKeyDown = (e) => {
       // Check if user is typing in an input/textarea
       const targetTag = e.target?.tagName?.toLowerCase();
-      if (targetTag === 'input' || targetTag === 'textarea' || e.target?.isContentEditable) {
+      if (
+        targetTag === 'input' ||
+        targetTag === 'textarea' ||
+        e.target?.isContentEditable
+      ) {
         return;
       }
 

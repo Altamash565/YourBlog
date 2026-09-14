@@ -35,7 +35,6 @@ export class Service {
     } catch (e) {}
   }
 
-
   mapDocument(doc) {
     if (!doc) return null;
     console.log(

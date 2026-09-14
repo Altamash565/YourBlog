@@ -17,7 +17,6 @@ import { useTheme } from '@/context/ThemeContext';
 import authService from '@/appwrite/auth';
 import { ThemeToggle } from '@/new-components/ui/theme-toggle';
 
-
 import {
   Button,
   Avatar,
