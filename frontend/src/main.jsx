@@ -13,7 +13,7 @@ const HomeV2 = lazy(() => import('./new-pages/HomeV2.jsx'));
 const AddPost = lazy(() => import('./pages/AddPost.jsx'));
 const Signup = lazy(() => import('./pages/Signup.jsx'));
 const EditPost = lazy(() => import('./pages/EditPost.jsx'));
-const Post = lazy(() => import('./pages/Post.jsx'));
+const Post = lazy(() => import('./new-pages/PostV2.jsx'));
 const AllPostsV2 = lazy(() => import('./new-pages/AllPostsV2.jsx'));
 
 const router = createBrowserRouter([
