@@ -57,7 +57,7 @@ function FeaturedArticle({ staffPicks = [], selectedTopic = 'All', onSelectTopic
                   {/* Pick Title */}
                   <Link
                     to={`/post/${pick.$id}`}
-                    className="line-clamp-2 block font-serif text-sm leading-snug font-bold text-zinc-900 group-hover:underline dark:text-zinc-100"
+                    className="line-clamp-2 block font-heading text-sm leading-snug font-bold text-zinc-900 group-hover:underline dark:text-zinc-100"
                   >
                     {pick.title}
                   </Link>
