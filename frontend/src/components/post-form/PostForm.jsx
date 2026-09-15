@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { Button, Input, RTE, Select } from '..';
 import appwriteService from '../../appwrite/config1';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ImagePlus, AlertCircle } from 'lucide-react';
 
 function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -107,83 +107,145 @@ function PostForm({ post }) {
       subscription.unsubscribe();
     };
   }, [watch, slugTransform, setValue]);
+
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className="grid grid-cols-1 gap-8 lg:grid-cols-3"
+      className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8"
     >
-      {/* Editor Section */}
-      <div className="space-y-6 lg:col-span-2">
-        <Input
-          label="Post Title"
-          placeholder="Enter article title"
-          className="w-full dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
-          {...register('title', { required: true })}
-        />
-        <Input
-          label="Slug (URL Path)"
-          placeholder="auto-generated-slug"
-          className="w-full font-mono text-xs dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
-          {...register('slug', { required: true })}
-          onInput={(e) => {
-            setValue('slug', slugTransform(e.currentTarget.value), {
-              shouldValidate: true,
-            });
-          }}
-        />
-        <RTE
-          label="Article Content"
-          name="content"
-          control={control}
-          defaultValue={getValues('content')}
-        />
+      {/* ─── Editor Section ─── */}
+      <div className="space-y-5 lg:col-span-2">
+        {/* Title */}
+        <div>
+          <label className="mb-1.5 block text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
+            Title
+          </label>
+          <Input
+            placeholder="Give your story a title…"
+            className="w-full text-base dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+            {...register('title', { required: true })}
+          />
+        </div>
+
+        {/* Slug */}
+        <div>
+          <label className="mb-1.5 block text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
+            Slug
+          </label>
+          <Input
+            placeholder="auto-generated-slug"
+            className="w-full text-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+            {...register('slug', { required: true })}
+            onInput={(e) => {
+              setValue('slug', slugTransform(e.currentTarget.value), {
+                shouldValidate: true,
+              });
+            }}
+          />
+          <p className="mt-1 pl-0.5 text-[11px] text-zinc-400 dark:text-zinc-500">
+            URL-friendly identifier, auto-generated from title
+          </p>
+        </div>
+
+        {/* Rich Text Editor */}
+        <div>
+          <label className="mb-1.5 block text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
+            Content
+          </label>
+          <RTE
+            name="content"
+            control={control}
+            defaultValue={getValues('content')}
+          />
+        </div>
       </div>
 
-      {/* Publishing Settings Sidebar */}
-      <div className="h-fit space-y-6 rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm lg:col-span-1 dark:border-zinc-800/80 dark:bg-zinc-900/60">
-        {submitError && (
-          <div className="rounded-lg border border-red-200/50 bg-red-50 p-3 text-sm font-medium text-red-600 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400">
-            {submitError}
+      {/* ─── Sidebar: Publishing Settings ─── */}
+      <div className="lg:col-span-1">
+        <div className="sticky top-20 space-y-5 rounded-2xl border border-zinc-200/80 bg-white/60 p-5 backdrop-blur-sm dark:border-zinc-800/80 dark:bg-zinc-900/40">
+          <h3 className="text-xs font-semibold tracking-wide text-zinc-400 uppercase dark:text-zinc-500">
+            Publish Settings
+          </h3>
+
+          {/* Error message */}
+          {submitError && (
+            <div className="flex items-start gap-2 rounded-xl border border-red-200/60 bg-red-50/80 p-3 text-[13px] text-red-600 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400">
+              <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <span>{submitError}</span>
+            </div>
+          )}
+
+          {/* Featured Image */}
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
+              Cover Image
+            </label>
+            <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-zinc-200 bg-zinc-50/60 px-4 py-6 text-center transition-colors hover:border-zinc-300 hover:bg-zinc-100/60 dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:border-zinc-700 dark:hover:bg-zinc-800/40">
+              <ImagePlus className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                Click to upload image
+              </span>
+              <span className="text-[10px] text-zinc-400 dark:text-zinc-600">
+                PNG, JPG, GIF
+              </span>
+              <input
+                type="file"
+                className="hidden"
+                accept="image/png, image/jpg, image/jpeg, image/gif"
+                {...register('image', { required: !post })}
+              />
+            </label>
           </div>
-        )}
-        <Input
-          label="Featured Image"
-          type="file"
-          className="w-full cursor-pointer dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
-          accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register('image', { required: !post })}
-        />
-        {post && (
-          <div className="w-full overflow-hidden rounded-xl border border-zinc-200/50 dark:border-zinc-800/50">
-            <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
-              alt={post.title}
-              className="max-h-48 w-full object-cover"
+
+          {/* Existing image preview (edit mode) */}
+          {post && post.featuredImage && (
+            <div className="overflow-hidden rounded-xl border border-zinc-200/50 dark:border-zinc-800/50">
+              <img
+                src={appwriteService.getFilePreview(post.featuredImage)}
+                alt={post.title}
+                className="h-36 w-full object-cover"
+              />
+            </div>
+          )}
+
+          {/* Status */}
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
+              Status
+            </label>
+            <Controller
+              name="status"
+              control={control}
+              defaultValue={post?.status || 'active'}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  options={['active', 'inactive']}
+                  className="w-full"
+                />
+              )}
             />
           </div>
-        )}
-        <Select
-          options={['active', 'inactive']}
-          label="Publication Status"
-          className="w-full dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
-          {...register('status', { required: true })}
-        />
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-zinc-900 py-2.5 font-semibold text-white shadow-sm transition-all duration-200 hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              {post ? 'Updating...' : 'Publishing...'}
-            </>
-          ) : post ? (
-            'Update Article'
-          ) : (
-            'Publish Article'
-          )}
-        </Button>
+
+          {/* Submit button */}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-zinc-900 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {post ? 'Updating…' : 'Publishing…'}
+              </>
+            ) : post ? (
+              'Update Article'
+            ) : (
+              'Publish Article'
+            )}
+          </Button>
+        </div>
       </div>
     </form>
   );

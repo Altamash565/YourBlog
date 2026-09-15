@@ -1,32 +1,108 @@
 import React, { useId } from 'react';
+import {
+  Select as UiSelect,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/new-components/ui/select';
+import { CheckCircle2, CircleDashed } from 'lucide-react';
 
 const Select = React.forwardRef(function Select(
-  { options, label, className = '', ...props },
+  {
+    options = [],
+    label,
+    value,
+    defaultValue,
+    onChange,
+    onValueChange,
+    placeholder = 'Select an option',
+    className = '',
+    name,
+    disabled = false,
+    ...props
+  },
   ref
 ) {
   const id = useId();
+  const [internalValue, setInternalValue] = React.useState(
+    value ?? defaultValue ?? options[0] ?? ''
+  );
+
+  const currentValue = value !== undefined ? value : internalValue;
+
+  const handleValueChange = (val) => {
+    if (value === undefined) {
+      setInternalValue(val);
+    }
+    if (onValueChange) {
+      onValueChange(val);
+    }
+    if (onChange) {
+      onChange({
+        target: {
+          name,
+          value: val,
+        },
+      });
+    }
+  };
+
   return (
     <div className="w-full">
       {label && (
         <label
           htmlFor={id}
-          className="mb-1.5 block pl-0.5 text-sm font-semibold text-zinc-700 select-none dark:text-zinc-300"
+          className="mb-1.5 block text-xs font-semibold tracking-wide text-zinc-500 uppercase select-none dark:text-zinc-400"
         >
           {label}
         </label>
       )}
-      <select
-        {...props}
-        id={id}
-        ref={ref}
-        className={`flex w-full cursor-pointer rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-900 transition-all duration-200 outline-none hover:border-zinc-300 focus:border-zinc-500 focus:ring-4 focus:ring-zinc-500/10 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 dark:hover:border-zinc-700 dark:focus:border-zinc-400 dark:focus:ring-zinc-400/10 ${className}`}
+      <UiSelect
+        value={currentValue}
+        onValueChange={handleValueChange}
+        disabled={disabled}
+        name={name}
       >
-        {options?.map((option) => (
-          <option key={option} value={option} className="dark:bg-zinc-900">
-            {option}
-          </option>
-        ))}
-      </select>
+        <SelectTrigger id={id} ref={ref} className={className} {...props}>
+          <SelectValue placeholder={placeholder}>
+            {currentValue === 'active' ? (
+              <span className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
+                <span className="font-medium capitalize">Active</span>
+              </span>
+            ) : currentValue === 'inactive' ? (
+              <span className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
+                <CircleDashed className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+                <span className="font-medium capitalize">Inactive</span>
+              </span>
+            ) : (
+              <span className="capitalize">{currentValue || placeholder}</span>
+            )}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {options?.map((option) => {
+            const optVal = typeof option === 'object' ? option.value : option;
+            const optLabel = typeof option === 'object' ? option.label : option;
+            const isStatus = optVal === 'active' || optVal === 'inactive';
+
+            return (
+              <SelectItem key={optVal} value={optVal}>
+                <div className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+                  {isStatus && optVal === 'active' && (
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
+                  )}
+                  {isStatus && optVal === 'inactive' && (
+                    <CircleDashed className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+                  )}
+                  <span className="font-medium capitalize">{optLabel}</span>
+                </div>
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </UiSelect>
     </div>
   );
 });

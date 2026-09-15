@@ -130,7 +130,7 @@ function BlogCard({ $id, title, content, featuredImage, $createdAt }) {
             {/* Left: Title & Excerpt */}
             <div className="min-w-0 flex-1 pr-1">
               <Link to={`/post/${$id}`} className="block">
-                <h2 className="line-clamp-2 font-heading text-xl leading-snug font-bold tracking-tight text-zinc-900 group-hover:text-zinc-600 sm:text-2xl dark:text-zinc-100 dark:group-hover:text-zinc-300">
+                <h2 className="font-heading line-clamp-2 text-xl leading-snug font-bold tracking-tight text-zinc-900 group-hover:text-zinc-600 sm:text-2xl dark:text-zinc-100 dark:group-hover:text-zinc-300">
                   {title}
                 </h2>
                 {plainExcerpt && (

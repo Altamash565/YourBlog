@@ -1,4 +1,5 @@
 export * from './button';
+export * from './dialog';
 export * from './dropdown-menu';
 export * from './sheet';
 export * from './avatar';
@@ -12,6 +13,7 @@ export * from './theme-provider';
 export * from './badge';
 export * from './card';
 export * from './skeleton';
+export * from './select';
 export {
   Sidebar as UiSidebar,
   SidebarContent,

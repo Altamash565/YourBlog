@@ -194,7 +194,9 @@ function PostCardItem({ post }) {
                   : 'text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
               }`}
             >
-              <ArrowBigDown className={`h-3.5 w-3.5 ${vote === -1 ? 'fill-current' : ''}`} />
+              <ArrowBigDown
+                className={`h-3.5 w-3.5 ${vote === -1 ? 'fill-current' : ''}`}
+              />
             </button>
           </div>
 
@@ -331,7 +333,7 @@ function AllPostsV2() {
 
       {/* Loading Skeleton Grid: Static without pulse animations */}
       {loading ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
@@ -387,7 +389,7 @@ function AllPostsV2() {
         </div>
       ) : (
         /* 3-Column Mid-Square Static Grid */
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {filteredPosts.map((post) => (
             <PostCardItem key={post.$id} post={post} />
           ))}
