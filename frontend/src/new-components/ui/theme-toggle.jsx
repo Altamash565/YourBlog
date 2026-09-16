@@ -6,8 +6,14 @@ import { motion, useMotionValue, useTransform, animate } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/new-components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/new-components/ui/tooltip';
 
-function ThemeToggle({ className }) {
+function ThemeToggle({ className, side = 'bottom' }) {
   const [mounted, setMounted] = React.useState(false);
   const { setTheme, resolvedTheme, theme } = useTheme();
 
@@ -24,16 +30,27 @@ function ThemeToggle({ className }) {
   }
 
   const isDark = (resolvedTheme ?? theme) === 'dark';
+  const label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+
   return (
-    <Button
-      onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className={cn('px-2.5', className)}
-      variant="outline"
-      size="icon"
-      aria-label="Toggle theme"
-    >
-      <SolarSwitch isDark={isDark} />
-    </Button>
+    <TooltipProvider delayDuration={150}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            className={cn('px-2.5 cursor-pointer', className)}
+            variant="outline"
+            size="icon"
+            aria-label={label}
+          >
+            <SolarSwitch isDark={isDark} />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={side} sideOffset={6}>
+          <p>{label}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
