@@ -1,17 +1,36 @@
 import React from 'react';
-import { Container, PostForm } from '../components';
+import { PostForm } from '../components';
 import { motion } from 'framer-motion';
+
+const pageVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const headerVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: 'easeOut' },
+  },
+};
 
 function AddPostV2() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
       className="mx-auto w-full max-w-5xl py-6 sm:py-10"
     >
       {/* Page Header */}
-      <div className="mb-8">
+      <motion.div variants={headerVariants} className="mb-8">
         <h1 className="font-heading text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
           Write a Story
         </h1>
@@ -19,7 +38,7 @@ function AddPostV2() {
           Share your ideas with the world. Fill in the details below and publish your
           article.
         </p>
-      </div>
+      </motion.div>
 
       <PostForm />
     </motion.div>
