@@ -13,6 +13,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { saveAuthor } from '@/lib/author';
 
 function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -184,6 +185,10 @@ function PostForm({ post }) {
         const file = await appwriteService.uploadFile(data.image[0]);
 
         if (file) {
+          if (userData?.$id && userData?.name) {
+            saveAuthor(userData.$id, userData.name);
+          }
+
           const fileId = file.$id;
           const dbPost = await appwriteService.createPost({
             title: data.title,
@@ -192,6 +197,7 @@ function PostForm({ post }) {
             featuredImage: fileId,
             status: data.status,
             userId: userData.$id,
+            authorName: userData.name || '',
           });
           if (dbPost) {
             navigate(`/post/${dbPost.slug || dbPost.$id}`);

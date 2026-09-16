@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import appwriteService from '@/appwrite/config1';
+import { resolveAuthorName, getAuthorInitials } from '@/lib/author';
 import {
   ThumbsUp,
   ThumbsDown,
@@ -54,12 +56,17 @@ function formatRelativeTime(dateString) {
   });
 }
 
-function BlogCard({ $id, title, content, featuredImage, $createdAt }) {
+function BlogCard({ post, $id, title, content, featuredImage, $createdAt, userId, authorName }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [imgError, setImgError] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const currentUser = useSelector((state) => state.auth.userData);
+  const postObj = post || { $id, title, content, featuredImage, $createdAt, userId, authorName };
+  const author = resolveAuthorName(postObj, currentUser?.$id, currentUser?.name);
+  const authorInitials = getAuthorInitials(author);
 
   // Parse plain text excerpt from HTML/rich content
   const plainExcerpt = content ? content.replace(/<[^>]*>?/gm, '').trim() : '';
@@ -113,8 +120,15 @@ function BlogCard({ $id, title, content, featuredImage, $createdAt }) {
   return (
     <TooltipProvider delayDuration={150}>
       <article className="group mb-8 border-b border-zinc-200/70 pb-8 dark:border-zinc-800/70">
-        {/* 1. Date & Reading Time */}
-        <div className="mb-2 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+        {/* 1. Author Byline, Date & Reading Time */}
+        <div className="mb-2.5 flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-[10px] font-semibold text-white dark:bg-zinc-200 dark:text-zinc-900">
+            {authorInitials}
+          </div>
+          <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+            {author}
+          </span>
+          <span className="text-zinc-300 dark:text-zinc-700">·</span>
           {relativeDate && (
             <span title={fullDate} className="cursor-default">
               {relativeDate}

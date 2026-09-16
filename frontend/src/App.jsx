@@ -7,6 +7,7 @@ import { GlobalLoader } from './components';
 import { Navbar, Sidebar } from './new-components';
 import { SidebarProvider, SidebarInset } from '@/new-components/ui/sidebar';
 import { Outlet } from 'react-router-dom';
+import { saveAuthor } from '@/lib/author';
 
 function App() {
   const dispatch = useDispatch();
@@ -16,6 +17,9 @@ function App() {
       .getCurrentUser()
       .then((userData) => {
         if (userData) {
+          if (userData.$id && userData.name) {
+            saveAuthor(userData.$id, userData.name);
+          }
           dispatch(login({ userData }));
         } else {
           const hasLocalSession = !!localStorage.getItem('yourblog_user_data');

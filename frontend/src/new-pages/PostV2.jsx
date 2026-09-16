@@ -4,6 +4,7 @@ import appwriteService from '../appwrite/config1';
 import parse from 'html-react-parser';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import { resolveAuthorName, getAuthorInitials } from '@/lib/author';
 import {
   ArrowLeft,
   Heart,
@@ -174,20 +175,11 @@ export default function PostV2() {
   }, [headings, processedContent]);
 
   const authorName = useMemo(() => {
-    if (isAuthor && userData?.name) return userData.name;
-    if (post?.userName) return post.userName;
-    if (post?.author) return post.author;
-    return null;
-  }, [isAuthor, userData?.name, post?.userName, post?.author]);
+    return resolveAuthorName(post, userData?.$id, userData?.name);
+  }, [post, userData?.$id, userData?.name]);
 
   const authorInitials = useMemo(() => {
-    if (!authorName) return '';
-    return authorName
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+    return getAuthorInitials(authorName);
   }, [authorName]);
 
   const handleConfirmDelete = async () => {

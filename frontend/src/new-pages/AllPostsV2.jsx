@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import appwriteService from '@/appwrite/config1';
+import { resolveAuthorName, getAuthorInitials } from '@/lib/author';
 import { Card } from '@/new-components/ui/card';
 import { Badge } from '@/new-components/ui/badge';
 import { Input } from '@/new-components/ui/input';
@@ -23,6 +25,30 @@ import {
   X,
   Plus,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.04,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+};
 
 function formatRelativeTime(dateString) {
   if (!dateString) return '';
@@ -49,6 +75,11 @@ function PostCardItem({ post }) {
   const [vote, setVote] = useState(0); // 0 = none, 1 = upvoted, -1 = downvoted
   const [copied, setCopied] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const currentUser = useSelector((state) => state.auth.userData);
+
+  const author = resolveAuthorName(post, currentUser?.$id, currentUser?.name);
+  const authorInitials = getAuthorInitials(author);
+  const title = post?.title;
 
   // Extract clean plain text excerpt from HTML content
   const plainExcerpt = useMemo(() => {
@@ -90,7 +121,7 @@ function PostCardItem({ post }) {
     e.stopPropagation();
     const url = `${window.location.origin}/post/${post.$id}`;
     if (navigator.share) {
-      navigator.share({ title: post.title, url }).catch(() => {});
+      navigator.share({ title, url }).catch(() => {});
     } else {
       navigator.clipboard?.writeText(url);
       setCopied(true);
@@ -101,15 +132,20 @@ function PostCardItem({ post }) {
   return (
     <Card className="group relative flex h-full flex-col justify-between overflow-hidden rounded-xl border border-zinc-200/90 bg-white p-4.5 shadow-xs sm:rounded-2xl sm:p-5 dark:border-zinc-800/80 dark:bg-zinc-900/60">
       <div>
-        {/* Top Meta: Date on Left, Read Time on Right */}
+        {/* Top Meta: Author on Left, Date & Read Time on Right */}
         <div className="mb-3 flex items-center justify-between text-[11px] text-zinc-500 sm:text-xs dark:text-zinc-400">
           <div className="flex items-center gap-1.5 font-medium">
-            <Clock className="h-3.5 w-3.5 text-zinc-400" />
-            <span title={fullDate}>{relativeDate || 'Recently'}</span>
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-[9px] font-semibold text-white dark:bg-zinc-200 dark:text-zinc-900">
+              {authorInitials}
+            </div>
+            <span className="max-w-[120px] truncate font-semibold text-zinc-800 sm:max-w-[160px] dark:text-zinc-200">
+              {author}
+            </span>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <BookOpen className="h-3.5 w-3.5 text-zinc-400" />
+          <div className="flex shrink-0 items-center gap-1.5 text-zinc-400 dark:text-zinc-500">
+            <span title={fullDate}>{relativeDate || 'Recently'}</span>
+            <span>·</span>
             <span>{readTimeMinutes} min</span>
           </div>
         </div>
@@ -287,9 +323,17 @@ function AllPostsV2() {
   }, [posts, searchQuery]);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6"
+    >
       {/* Header matching the minimal screenshot style */}
-      <div className="mb-6 flex flex-col justify-between gap-4 border-b border-zinc-200/80 pb-5 sm:flex-row sm:items-end dark:border-zinc-800/80">
+      <motion.div
+        variants={itemVariants}
+        className="mb-6 flex flex-col justify-between gap-4 border-b border-zinc-200/80 pb-5 sm:flex-row sm:items-end dark:border-zinc-800/80"
+      >
         <div>
           <h1 className="text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl dark:text-zinc-50">
             All Posts
@@ -323,17 +367,20 @@ function AllPostsV2() {
 
           <Link
             to="/add-post"
-            className="inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-md bg-zinc-900 px-3 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-md bg-zinc-900 px-3 text-xs font-semibold text-white transition-transform active:scale-95 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>Add Post</span>
           </Link>
         </div>
-      </div>
+      </motion.div>
 
       {/* Loading Skeleton Grid: Static without pulse animations */}
       {loading ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
+        >
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
@@ -355,10 +402,13 @@ function AllPostsV2() {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
       ) : filteredPosts.length === 0 ? (
         /* Empty State */
-        <div className="rounded-2xl border border-dashed border-zinc-200 py-16 text-center dark:border-zinc-800">
+        <motion.div
+          variants={itemVariants}
+          className="rounded-2xl border border-dashed border-zinc-200 py-16 text-center dark:border-zinc-800"
+        >
           <FileText className="mx-auto mb-3 h-8 w-8 text-zinc-400" />
           <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
             No posts found
@@ -371,7 +421,7 @@ function AllPostsV2() {
           <div className="mt-4 flex items-center justify-center gap-3">
             <Link
               to="/add-post"
-              className="inline-flex items-center gap-1.5 rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="inline-flex items-center gap-1.5 rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white transition-transform active:scale-95 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               <Plus className="h-3.5 w-3.5" />
               <span>Create post</span>
@@ -386,16 +436,21 @@ function AllPostsV2() {
               </button>
             )}
           </div>
-        </div>
+        </motion.div>
       ) : (
-        /* 3-Column Mid-Square Static Grid */
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+        /* 3-Column Mid-Square Grid with Staggered Motion */
+        <motion.div
+          variants={containerVariants}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
+        >
           {filteredPosts.map((post) => (
-            <PostCardItem key={post.$id} post={post} />
+            <motion.div key={post.$id} variants={itemVariants}>
+              <PostCardItem post={post} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }
 

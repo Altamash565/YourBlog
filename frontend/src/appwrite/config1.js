@@ -37,19 +37,15 @@ export class Service {
 
   mapDocument(doc) {
     if (!doc) return null;
-    console.log(
-      '🔍 mapDocument raw keys:',
-      Object.keys(doc).filter((k) => !k.startsWith('$'))
-    );
-    console.log(
-      '🔍 mapDocument featuredimage:',
-      doc.featuredimage,
-      '| featuredImage:',
-      doc.featuredImage
-    );
     return {
       ...doc,
       featuredImage: doc.featuredimage || doc.featuredImage,
+      authorName:
+        doc.authorName ||
+        doc.author ||
+        doc.userName ||
+        doc.user_name ||
+        null,
     };
   }
 
@@ -61,7 +57,7 @@ export class Service {
     };
   }
 
-  async createPost({ title, slug, content, featuredImage, status, userId }) {
+  async createPost({ title, slug, content, featuredImage, status, userId, authorName }) {
     // Validate required fields before hitting the API
     if (!userId) {
       throw new Error('Cannot create post: User ID is missing. Please log in again.');
@@ -73,14 +69,31 @@ export class Service {
       throw new Error('Cannot create post: Slug is missing.');
     }
 
+    const payload = {
+      title,
+      content: content || '',
+      featuredimage: featuredImage,
+      status,
+      userId: String(userId),
+    };
+
     try {
-      const payload = {
-        title,
-        content: content || '',
-        featuredimage: featuredImage,
-        status,
-        userId: String(userId),
-      };
+      if (authorName) {
+        try {
+          const response = await this.databases.createDocument(
+            config.appwriteDatabaseId,
+            config.appwriteCollectionId,
+            slug,
+            { ...payload, authorName: String(authorName) }
+          );
+          return this.mapDocument(response);
+        } catch (attrError) {
+          // Fallback if authorName attribute does not exist in Appwrite collection
+          console.warn(
+            'Appwrite createPost: authorName attribute not in schema, using standard payload'
+          );
+        }
+      }
 
       const response = await this.databases.createDocument(
         config.appwriteDatabaseId,
