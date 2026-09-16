@@ -12,7 +12,7 @@ import {
   Trash2,
   RefreshCw,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { saveAuthor } from '@/lib/author';
 
 function PostForm({ post }) {

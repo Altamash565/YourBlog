@@ -2,8 +2,9 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import appwriteService from '../appwrite/config1';
 import parse from 'html-react-parser';
+import DOMPurify from 'dompurify';
 import { useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { resolveAuthorName, getAuthorInitials } from '@/lib/author';
 import {
   ArrowLeft,
@@ -107,8 +108,9 @@ export default function PostV2() {
     if (!post?.content) return { processedContent: '', headings: [] };
 
     try {
+      const cleanContent = DOMPurify.sanitize(post.content);
       const parser = new DOMParser();
-      const doc = parser.parseFromString(post.content, 'text/html');
+      const doc = parser.parseFromString(cleanContent, 'text/html');
       const elements = doc.querySelectorAll('h1, h2, h3, h4');
       const items = [];
       const usedIds = new Set();
@@ -150,7 +152,7 @@ export default function PostV2() {
     } catch (e) {
       console.error('Failed to parse headings for Table of Contents:', e);
       return {
-        processedContent: post.content,
+        processedContent: DOMPurify.sanitize(post.content),
         headings: [],
       };
     }

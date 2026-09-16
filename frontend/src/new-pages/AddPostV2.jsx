@@ -1,6 +1,6 @@
 import React from 'react';
 import { PostForm } from '../components';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 const pageVariants = {
   hidden: { opacity: 0 },

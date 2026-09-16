@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import appwriteService from '@/appwrite/config1';
 import { PostForm } from '../components';
 import { FormSkeleton } from '../components/Loader';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/new-components/ui/button';
 

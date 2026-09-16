@@ -6,11 +6,14 @@ import { login, logout, setAuthResolved } from './store/authSlice';
 import { GlobalLoader } from './components';
 import { Navbar, Sidebar } from './new-components';
 import { SidebarProvider, SidebarInset } from '@/new-components/ui/sidebar';
-import { Outlet } from 'react-router-dom';
+import { ThemeToggle } from '@/new-components/ui/theme-toggle';
+import { Outlet, useLocation } from 'react-router-dom';
 import { saveAuthor } from '@/lib/author';
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
   useEffect(() => {
     authService
@@ -39,6 +42,21 @@ function App() {
         dispatch(setAuthResolved());
       });
   }, [dispatch]);
+
+  if (isAuthPage) {
+    return (
+      <div className="relative flex min-h-screen w-full flex-col bg-zinc-50 text-zinc-900 transition-colors dark:bg-zinc-950 dark:text-zinc-50">
+        <div className="absolute right-4 top-4 z-50">
+          <ThemeToggle />
+        </div>
+        <main className="flex min-h-screen w-full flex-1 items-center justify-center p-4">
+          <Suspense fallback={<GlobalLoader />}>
+            <Outlet />
+          </Suspense>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider defaultOpen={true}>

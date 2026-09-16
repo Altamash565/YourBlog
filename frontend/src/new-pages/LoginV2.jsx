@@ -1,7 +1,12 @@
 import React from 'react';
+import { LoginForm } from '@/new-components/auth';
 
-const LoginV2 = () => {
-  return <div className="login-v2">{/* LoginV2 placeholder */}</div>;
-};
+function LoginV2() {
+  return (
+    <div className="flex w-full items-center justify-center">
+      <LoginForm />
+    </div>
+  );
+}
 
 export default LoginV2;

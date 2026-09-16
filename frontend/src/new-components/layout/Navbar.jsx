@@ -126,7 +126,7 @@ export default function Navbar() {
     try {
       await authService.logout();
       dispatch(logout());
-      navigate('/');
+      navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);
     }

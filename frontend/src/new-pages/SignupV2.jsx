@@ -1,7 +1,12 @@
 import React from 'react';
+import { SignupForm } from '@/new-components/auth';
 
-const SignupV2 = () => {
-  return <div className="signup-v2">{/* SignupV2 placeholder */}</div>;
-};
+function SignupV2() {
+  return (
+    <div className="flex w-full items-center justify-center">
+      <SignupForm />
+    </div>
+  );
+}
 
 export default SignupV2;

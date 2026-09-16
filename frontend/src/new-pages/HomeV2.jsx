@@ -4,7 +4,7 @@ import appwriteService from '@/appwrite/config1';
 import { BlogCard } from '@/new-components/blog';
 import { Skeleton } from '@/new-components/ui/skeleton';
 import { BookOpen, SquarePen, Search, X } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
