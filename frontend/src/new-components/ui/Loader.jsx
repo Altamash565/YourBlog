@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 export function Spinner({ className, ...props }) {
   return (
     <Loader2
-      className={cn('h-6 w-6 animate-spin text-muted-foreground', className)}
+      className={cn('text-muted-foreground h-6 w-6 animate-spin', className)}
       {...props}
     />
   );
@@ -15,7 +15,7 @@ export function Loading({ className, ...props }) {
   return (
     <div
       className={cn(
-        'flex flex-1 w-full min-h-[60vh] items-center justify-center',
+        'flex min-h-[60vh] w-full flex-1 items-center justify-center',
         className
       )}
       {...props}

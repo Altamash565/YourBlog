@@ -78,6 +78,38 @@ export class AuthService {
     }
   }
 
+  async updateName(name) {
+    try {
+      this.ensureSession();
+      const updated = await this.account.updateName(name);
+      return updated;
+    } catch (error) {
+      console.log('Appwrite service :: updateName :: error', error);
+      throw error;
+    }
+  }
+
+  async updatePrefs(prefs) {
+    try {
+      this.ensureSession();
+      const updated = await this.account.updatePrefs(prefs);
+      return updated;
+    } catch (error) {
+      console.log('Appwrite service :: updatePrefs :: error', error);
+      throw error;
+    }
+  }
+
+  async getPrefs() {
+    try {
+      this.ensureSession();
+      return await this.account.getPrefs();
+    } catch (error) {
+      console.log('Appwrite service :: getPrefs :: error', error);
+      return {};
+    }
+  }
+
   async logout() {
     try {
       await this.account.deleteSessions();

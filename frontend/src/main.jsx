@@ -16,6 +16,8 @@ const SignupV2 = lazy(() => import('./new-pages/SignupV2.jsx'));
 const EditPost = lazy(() => import('./new-pages/EditPostV2.jsx'));
 const Post = lazy(() => import('./new-pages/PostV2.jsx'));
 const AllPostsV2 = lazy(() => import('./new-pages/AllPostsV2.jsx'));
+const ProfileV2 = lazy(() => import('./new-pages/ProfileV2.jsx'));
+const SettingsV2 = lazy(() => import('./new-pages/SettingsV2.jsx'));
 
 const router = createBrowserRouter([
   {
@@ -63,6 +65,22 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication={true}>
             <EditPost />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: '/profile',
+        element: (
+          <AuthLayout authentication={true}>
+            <ProfileV2 />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: '/settings',
+        element: (
+          <AuthLayout authentication={true}>
+            <SettingsV2 />
           </AuthLayout>
         ),
       },

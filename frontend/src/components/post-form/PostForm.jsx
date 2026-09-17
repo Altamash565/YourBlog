@@ -156,9 +156,10 @@ function PostForm({ post }) {
 
       if (post) {
         // --- UPDATE FLOW ---
-        const file = data.image && data.image[0]
-          ? await appwriteService.uploadFile(data.image[0])
-          : null;
+        const file =
+          data.image && data.image[0]
+            ? await appwriteService.uploadFile(data.image[0])
+            : null;
 
         if (file) {
           // Clean up old image from storage
@@ -308,11 +309,7 @@ function PostForm({ post }) {
           <label className="mb-1.5 block text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">
             Content
           </label>
-          <RTE
-            name="content"
-            control={control}
-            defaultValue={getValues('content')}
-          />
+          <RTE name="content" control={control} defaultValue={getValues('content')} />
         </div>
       </motion.div>
 
@@ -388,12 +385,12 @@ function PostForm({ post }) {
                   onDragLeave={handleDragLeave}
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
-                  className={`group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center transition-all duration-200 outline-hidden ${
+                  className={`group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 text-center outline-hidden transition-all duration-200 ${
                     isDragging
-                      ? 'border-indigo-500 bg-indigo-50/80 shadow-md ring-4 ring-indigo-500/20 scale-[1.01] dark:border-indigo-400 dark:bg-indigo-950/40 dark:ring-indigo-400/20'
+                      ? 'scale-[1.01] border-indigo-500 bg-indigo-50/80 shadow-md ring-4 ring-indigo-500/20 dark:border-indigo-400 dark:bg-indigo-950/40 dark:ring-indigo-400/20'
                       : imageError
-                      ? 'border-red-300 bg-red-50/30 hover:border-red-400 dark:border-red-800 dark:bg-red-950/20'
-                      : 'border-zinc-200 bg-zinc-50/70 hover:border-indigo-400/70 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:border-indigo-500/50 dark:hover:bg-zinc-800/40'
+                        ? 'border-red-300 bg-red-50/30 hover:border-red-400 dark:border-red-800 dark:bg-red-950/20'
+                        : 'border-zinc-200 bg-zinc-50/70 hover:border-indigo-400/70 hover:bg-zinc-100/70 dark:border-zinc-800 dark:bg-zinc-900/40 dark:hover:border-indigo-500/50 dark:hover:bg-zinc-800/40'
                   }`}
                 >
                   <div
@@ -492,7 +489,9 @@ function PostForm({ post }) {
                         <button
                           type="button"
                           onClick={handleRemoveImage}
-                          title={previewUrl && post ? 'Revert to original' : 'Remove image'}
+                          title={
+                            previewUrl && post ? 'Revert to original' : 'Remove image'
+                          }
                           className="flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
                         >
                           <Trash2 className="h-3 w-3" />

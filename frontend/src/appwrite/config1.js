@@ -40,12 +40,7 @@ export class Service {
     return {
       ...doc,
       featuredImage: doc.featuredimage || doc.featuredImage,
-      authorName:
-        doc.authorName ||
-        doc.author ||
-        doc.userName ||
-        doc.user_name ||
-        null,
+      authorName: doc.authorName || doc.author || doc.userName || doc.user_name || null,
     };
   }
 

@@ -5,7 +5,7 @@ import { login } from '../store/authSlice';
 import { Button, Input, Logo } from './index.js';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { motion } from "motion/react"
+import { motion } from 'motion/react';
 import { Loader2 } from 'lucide-react';
 
 function Signup() {

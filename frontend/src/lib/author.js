@@ -25,11 +25,7 @@ export function resolveAuthorName(post, currentUserId, currentUserName) {
 
   // 1. Direct authorName / author / userName on the post object
   const directName =
-    post.authorName ||
-    post.author ||
-    post.userName ||
-    post.user_name ||
-    post.name;
+    post.authorName || post.author || post.userName || post.user_name || post.name;
   if (directName && typeof directName === 'string' && directName.trim()) {
     return directName.trim();
   }

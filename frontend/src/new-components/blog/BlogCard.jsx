@@ -56,7 +56,16 @@ function formatRelativeTime(dateString) {
   });
 }
 
-function BlogCard({ post, $id, title, content, featuredImage, $createdAt, userId, authorName }) {
+function BlogCard({
+  post,
+  $id,
+  title,
+  content,
+  featuredImage,
+  $createdAt,
+  userId,
+  authorName,
+}) {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -64,7 +73,15 @@ function BlogCard({ post, $id, title, content, featuredImage, $createdAt, userId
   const [copied, setCopied] = useState(false);
 
   const currentUser = useSelector((state) => state.auth.userData);
-  const postObj = post || { $id, title, content, featuredImage, $createdAt, userId, authorName };
+  const postObj = post || {
+    $id,
+    title,
+    content,
+    featuredImage,
+    $createdAt,
+    userId,
+    authorName,
+  };
   const author = resolveAuthorName(postObj, currentUser?.$id, currentUser?.name);
   const authorInitials = getAuthorInitials(author);
 
@@ -125,9 +142,7 @@ function BlogCard({ post, $id, title, content, featuredImage, $createdAt, userId
           <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-[10px] font-semibold text-white dark:bg-zinc-200 dark:text-zinc-900">
             {authorInitials}
           </div>
-          <span className="font-semibold text-zinc-900 dark:text-zinc-100">
-            {author}
-          </span>
+          <span className="font-semibold text-zinc-900 dark:text-zinc-100">{author}</span>
           <span className="text-zinc-300 dark:text-zinc-700">·</span>
           {relativeDate && (
             <span title={fullDate} className="cursor-default">

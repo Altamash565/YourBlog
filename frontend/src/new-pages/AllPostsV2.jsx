@@ -367,7 +367,7 @@ function AllPostsV2() {
 
           <Link
             to="/add-post"
-            className="inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-md bg-zinc-900 px-3 text-xs font-semibold text-white transition-transform active:scale-95 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="inline-flex h-8.5 shrink-0 items-center justify-center gap-1.5 rounded-md bg-zinc-900 px-3 text-xs font-semibold text-white transition-transform hover:bg-zinc-800 active:scale-95 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>Add Post</span>
@@ -421,7 +421,7 @@ function AllPostsV2() {
           <div className="mt-4 flex items-center justify-center gap-3">
             <Link
               to="/add-post"
-              className="inline-flex items-center gap-1.5 rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white transition-transform active:scale-95 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="inline-flex items-center gap-1.5 rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white transition-transform hover:bg-zinc-800 active:scale-95 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               <Plus className="h-3.5 w-3.5" />
               <span>Create post</span>

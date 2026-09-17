@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import {
-  BookOpen,
-  Eye,
-  EyeOff,
-  Loader2,
-  AlertCircle,
-  ArrowLeft,
-} from 'lucide-react';
+import { BookOpen, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import authService from '@/appwrite/auth';
 import { login } from '@/store/authSlice';
 import { MarginIcon } from '@/new-components';
@@ -111,9 +104,7 @@ export default function LoginForm() {
                 })}
               />
               {errors.email && (
-                <p className="text-xs font-medium text-red-500">
-                  {errors.email.message}
-                </p>
+                <p className="text-xs font-medium text-red-500">{errors.email.message}</p>
               )}
             </div>
 
@@ -147,7 +138,7 @@ export default function LoginForm() {
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />

@@ -6,9 +6,9 @@ import {
   Search,
   PenSquare,
   Compass,
-  FileText,
   LogOut,
   User,
+  Settings,
   X,
   Sparkles,
   BookOpen,
@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   Avatar,
@@ -37,6 +38,7 @@ import {
   Separator,
   ThemeToggle,
 } from '@/new-components/ui';
+import { Badge } from '@/new-components/ui/badge';
 
 export default function Navbar() {
   const { state, isMobile } = useSidebar();
@@ -134,6 +136,11 @@ export default function Navbar() {
   };
 
   const userInitial = userData?.name ? userData.name.trim().charAt(0).toUpperCase() : 'U';
+  const userName = userData?.name || 'Author';
+  const userAvatarUrl =
+    userData?.prefs?.avatarUrl ||
+    userData?.avatarUrl ||
+    (userData?.$id ? localStorage.getItem(`margin_avatar_${userData.$id}`) : null);
 
   const categories = [
     'Technology',
@@ -161,7 +168,7 @@ export default function Navbar() {
           {/* Mobile Logo with Name */}
           <Link to="/" className="flex items-center gap-2.5 md:hidden">
             <MarginIcon className="size-7 rounded-lg" />
-            <span className="font-['Inter',sans-serif] italic text-xl font-normal text-zinc-900 dark:text-zinc-100 pr-1 select-none">
+            <span className="pr-1 font-['Inter',sans-serif] text-xl font-normal text-zinc-900 italic select-none dark:text-zinc-100">
               Margin
             </span>
           </Link>
@@ -257,6 +264,13 @@ export default function Navbar() {
               <DropdownMenuTrigger asChild>
                 <button className="relative flex cursor-pointer items-center rounded-full p-0.5 ring-offset-2 outline-hidden focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600">
                   <Avatar className="h-8 w-8">
+                    {userAvatarUrl && (
+                      <AvatarImage
+                        src={userAvatarUrl}
+                        alt={userName}
+                        className="object-cover"
+                      />
+                    )}
                     <AvatarFallback className="bg-zinc-900 text-[11px] font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900">
                       {userInitial}
                     </AvatarFallback>
@@ -266,52 +280,69 @@ export default function Navbar() {
 
               <DropdownMenuContent
                 align="end"
-                className="z-[100] w-60 border border-zinc-200 bg-white p-2 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
+                className="z-[100] w-64 rounded-2xl border border-zinc-200/80 bg-white p-1.5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950"
               >
-                <DropdownMenuLabel className="px-2 py-1.5 font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm leading-none font-semibold text-zinc-900 dark:text-zinc-100">
-                      {userData?.name || 'Author'}
-                    </p>
-                    <p className="truncate text-xs leading-none text-zinc-500 dark:text-zinc-400">
-                      {userData?.email || 'author@margin.com'}
-                    </p>
+                <DropdownMenuLabel className="p-2 font-normal">
+                  <div className="flex items-center gap-2.5 text-left text-sm">
+                    <Avatar className="h-9 w-9 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                      {userAvatarUrl && (
+                        <AvatarImage
+                          src={userAvatarUrl}
+                          alt={userName}
+                          className="rounded-xl object-cover"
+                        />
+                      )}
+                      <AvatarFallback className="rounded-xl bg-zinc-900 text-xs font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900">
+                        {userInitial}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <div className="flex items-center gap-1.5">
+                        <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
+                          {userData?.name || 'Author'}
+                        </span>
+                        <Badge
+                          variant="secondary"
+                          className="px-1.5 py-0 text-[9px] font-semibold"
+                        >
+                          Author
+                        </Badge>
+                      </div>
+                      <span className="text-muted-foreground truncate text-xs">
+                        {userData?.email || 'author@margin.com'}
+                      </span>
+                    </div>
                   </div>
                 </DropdownMenuLabel>
 
                 <DropdownMenuSeparator className="my-1" />
 
-                <DropdownMenuItem
-                  onClick={() => navigate('/add-post')}
-                  className="cursor-pointer gap-2"
-                >
-                  <PenSquare className="h-4 w-4 text-zinc-500" />
-                  <span>Write Article</span>
-                </DropdownMenuItem>
+                {/* Account Group */}
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={() => navigate('/profile')}
+                    className="cursor-pointer gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                  >
+                    <User className="size-4 text-zinc-500" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
 
-                <DropdownMenuItem
-                  onClick={() => navigate('/all-posts')}
-                  className="cursor-pointer gap-2"
-                >
-                  <FileText className="h-4 w-4 text-zinc-500" />
-                  <span>All Articles</span>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onClick={() => navigate('/')}
-                  className="cursor-pointer gap-2"
-                >
-                  <Compass className="h-4 w-4 text-zinc-500" />
-                  <span>Explore Feed</span>
-                </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => navigate('/settings')}
+                    className="cursor-pointer gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                  >
+                    <Settings className="size-4 text-zinc-500" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
 
                 <DropdownMenuSeparator className="my-1" />
 
                 <DropdownMenuItem
                   onClick={handleLogout}
-                  className="cursor-pointer gap-2 text-red-600 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:focus:bg-red-950/40"
+                  className="cursor-pointer gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium text-red-600 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:focus:bg-red-950/40"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className="size-4" />
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

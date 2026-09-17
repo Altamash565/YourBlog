@@ -60,9 +60,7 @@ export default function SignupForm() {
       }
     } catch (err) {
       console.error('SignupForm :: createAccount error', err);
-      setServerError(
-        err?.message || 'Failed to create account. Please try again.'
-      );
+      setServerError(err?.message || 'Failed to create account. Please try again.');
     }
   };
 
@@ -114,9 +112,7 @@ export default function SignupForm() {
                 })}
               />
               {errors.name && (
-                <p className="text-xs font-medium text-red-500">
-                  {errors.name.message}
-                </p>
+                <p className="text-xs font-medium text-red-500">{errors.name.message}</p>
               )}
             </div>
 
@@ -144,9 +140,7 @@ export default function SignupForm() {
                 })}
               />
               {errors.email && (
-                <p className="text-xs font-medium text-red-500">
-                  {errors.email.message}
-                </p>
+                <p className="text-xs font-medium text-red-500">{errors.email.message}</p>
               )}
             </div>
 
@@ -178,7 +172,7 @@ export default function SignupForm() {
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />

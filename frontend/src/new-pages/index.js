@@ -5,3 +5,5 @@ export { default as LoginV2 } from './LoginV2';
 export { default as SignupV2 } from './SignupV2';
 export { default as AddPostV2 } from './AddPostV2';
 export { default as EditPostV2 } from './EditPostV2';
+export { default as ProfileV2 } from './ProfileV2';
+export { default as SettingsV2 } from './SettingsV2';

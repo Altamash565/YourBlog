@@ -20,8 +20,8 @@ function SelectTrigger({ className, children, ...props }) {
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       className={cn(
-        'group flex h-10 w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-900 shadow-xs transition-all duration-200 outline-none hover:border-zinc-300 focus:border-zinc-500 focus:ring-4 focus:ring-zinc-500/10 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:border-zinc-700 dark:focus:border-zinc-400 dark:focus:ring-zinc-400/10 [&>span]:line-clamp-1 cursor-pointer',
-        '[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:text-zinc-400 dark:[&_svg]:text-zinc-500 [&_svg]:transition-transform [&_svg]:duration-200 group-data-[state=open]:[&_svg]:rotate-180',
+        'group flex h-10 w-full cursor-pointer items-center justify-between rounded-xl border border-zinc-200 bg-white px-3.5 py-2 text-sm text-zinc-900 shadow-xs transition-all duration-200 outline-none hover:border-zinc-300 focus:border-zinc-500 focus:ring-4 focus:ring-zinc-500/10 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:border-zinc-700 dark:focus:border-zinc-400 dark:focus:ring-zinc-400/10 [&>span]:line-clamp-1',
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:text-zinc-400 [&_svg]:transition-transform [&_svg]:duration-200 group-data-[state=open]:[&_svg]:rotate-180 dark:[&_svg]:text-zinc-500 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
@@ -34,7 +34,13 @@ function SelectTrigger({ className, children, ...props }) {
   );
 }
 
-function SelectContent({ className, children, position = 'popper', sideOffset = 4, ...props }) {
+function SelectContent({
+  className,
+  children,
+  position = 'popper',
+  sideOffset = 4,
+  ...props
+}) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -54,8 +60,7 @@ function SelectContent({ className, children, position = 'popper', sideOffset = 
         <SelectPrimitive.Viewport
           className={cn(
             'p-0.5',
-            position === 'popper' &&
-              'w-full min-w-[var(--radix-select-trigger-width)]'
+            position === 'popper' && 'w-full min-w-[var(--radix-select-trigger-width)]'
           )}
         >
           {children}
@@ -84,7 +89,7 @@ function SelectItem({ className, children, ...props }) {
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        'relative flex w-full cursor-pointer select-none items-center justify-between rounded-lg py-2 px-2.5 text-sm font-medium outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-zinc-100 focus:text-zinc-900 dark:focus:bg-zinc-900 dark:focus:text-zinc-50',
+        'relative flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-2 text-sm font-medium transition-colors outline-none select-none focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-900 dark:focus:text-zinc-50',
         className
       )}
       {...props}

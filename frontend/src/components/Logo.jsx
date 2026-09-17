@@ -18,10 +18,14 @@ function Logo({ className = '', showText = true, size = 'default' }) {
 
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <MarginIcon className={`${iconSizes[size] || iconSizes.default} shrink-0 transition-transform hover:scale-105`} />
+      <MarginIcon
+        className={`${iconSizes[size] || iconSizes.default} shrink-0 transition-transform hover:scale-105`}
+      />
 
       {showText && (
-        <span className={`font-['Inter',sans-serif] italic ${textSizes[size] || textSizes.default} font-normal text-zinc-900 dark:text-zinc-50 pr-1 select-none`}>
+        <span
+          className={`font-['Inter',sans-serif] italic ${textSizes[size] || textSizes.default} pr-1 font-normal text-zinc-900 select-none dark:text-zinc-50`}
+        >
           Margin
         </span>
       )}

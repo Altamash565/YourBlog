@@ -11,6 +11,9 @@ import {
   BookOpen,
   ChevronsUpDown,
   PanelLeft,
+  User,
+  Settings,
+  HelpCircle,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -34,11 +37,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
 } from '@/new-components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/new-components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/new-components/ui/avatar';
+import { Badge } from '@/new-components/ui/badge';
 import authService from '@/appwrite/auth';
 import { logout } from '@/store/authSlice';
 import { cn } from '@/lib/utils';
 import { MarginIcon } from '../ui/MarginIcon';
+import { HelpSupportDialog } from './HelpSupportDialog';
 
 export default function AppSidebar({ ...props }) {
   const authStatus = useSelector((state) => state.auth.status);
@@ -48,6 +53,7 @@ export default function AppSidebar({ ...props }) {
   const dispatch = useDispatch();
   const { isMobile, state, toggleSidebar } = useSidebar();
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const [isHelpDialogOpen, setIsHelpDialogOpen] = useState(false);
   const isCollapsed = state === 'collapsed';
 
   const handleLogout = async () => {
@@ -72,6 +78,10 @@ export default function AppSidebar({ ...props }) {
   const userInitial = userData?.name ? userData.name.trim().charAt(0).toUpperCase() : 'U';
   const userName = userData?.name || 'Creator';
   const userEmail = userData?.email || 'creator@margin.com';
+  const userAvatarUrl =
+    userData?.prefs?.avatarUrl ||
+    userData?.avatarUrl ||
+    (userData?.$id ? localStorage.getItem(`margin_avatar_${userData.$id}`) : null);
 
   return (
     <Sidebar
@@ -104,7 +114,7 @@ export default function AppSidebar({ ...props }) {
                 className="group/brand flex w-full items-center gap-2.5"
               >
                 {/* Logo Box with Hover Toggle Swap */}
-                <div className="relative flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg overflow-hidden">
+                <div className="relative flex aspect-square size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg">
                   {/* Default: Margin logo icon */}
                   <MarginIcon
                     className={cn(
@@ -117,7 +127,7 @@ export default function AppSidebar({ ...props }) {
                   {/* On Hover when Collapsed: PanelLeft sidebar toggle icon */}
                   <div
                     className={cn(
-                      'size-8 items-center justify-center bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 transition-all duration-150',
+                      'size-8 items-center justify-center bg-zinc-200 text-zinc-700 transition-all duration-150 dark:bg-zinc-800 dark:text-zinc-200',
                       isCollapsed && isLogoHovered ? 'flex' : 'hidden',
                       'group-data-[collapsible=icon]:group-hover/brand:flex'
                     )}
@@ -128,7 +138,7 @@ export default function AppSidebar({ ...props }) {
 
                 {/* Brand Text - hidden automatically when collapsed */}
                 <div className="flex flex-1 items-center text-left group-data-[collapsible=icon]:hidden">
-                  <span className="font-['Inter',sans-serif] italic text-xl font-normal text-zinc-900 dark:text-zinc-100 pr-1 select-none">
+                  <span className="pr-1 font-['Inter',sans-serif] text-xl font-normal text-zinc-900 italic select-none dark:text-zinc-100">
                     Margin
                   </span>
                 </div>
@@ -170,6 +180,7 @@ export default function AppSidebar({ ...props }) {
             </SidebarMenuItem>
 
             {/* Write Story (Navigates to /add-post, protected route) */}
+            {/* Write Story (Navigates to /add-post, protected route) */}
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
@@ -184,6 +195,40 @@ export default function AppSidebar({ ...props }) {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+
+        {/* Account Group (Separate Pages for Profile & Settings) */}
+        {authStatus && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Account</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  tooltip="Profile"
+                  isActive={isActive('/profile')}
+                >
+                  <Link to="/profile">
+                    <User className="size-4" />
+                    <span>Profile</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  tooltip="Settings"
+                  isActive={isActive('/settings')}
+                >
+                  <Link to="/settings">
+                    <Settings className="size-4" />
+                    <span>Settings</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       {/* ========================================================================= */}
@@ -200,6 +245,13 @@ export default function AppSidebar({ ...props }) {
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
+                      {userAvatarUrl && (
+                        <AvatarImage
+                          src={userAvatarUrl}
+                          alt={userName}
+                          className="rounded-lg object-cover"
+                        />
+                      )}
                       <AvatarFallback className="rounded-lg bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
                         {userInitial}
                       </AvatarFallback>
@@ -214,50 +266,17 @@ export default function AppSidebar({ ...props }) {
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                  className="w-(--radix-dropdown-menu-trigger-width) min-w-52 rounded-2xl border border-zinc-200/80 bg-white p-1.5 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950"
                   side={isMobile ? 'bottom' : 'right'}
                   align="end"
-                  sideOffset={4}
+                  sideOffset={8}
                 >
-                  <DropdownMenuLabel className="p-0 font-normal">
-                    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                      <Avatar className="h-8 w-8 rounded-lg">
-                        <AvatarFallback className="rounded-lg bg-zinc-900 text-xs font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">
-                          {userInitial}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="grid flex-1 text-left text-sm leading-tight">
-                        <span className="truncate font-semibold">{userName}</span>
-                        <span className="text-muted-foreground truncate text-xs">
-                          {userEmail}
-                        </span>
-                      </div>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem
-                      onClick={() => navigate('/add-post')}
-                      className="cursor-pointer gap-2"
-                    >
-                      <PenSquare className="size-4" />
-                      <span>Write Story</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => navigate('/all-posts')}
-                      className="cursor-pointer gap-2"
-                    >
-                      <FileText className="size-4" />
-                      <span>All Articles</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={handleLogout}
-                    className="cursor-pointer gap-2 text-red-600 focus:bg-red-50 dark:text-red-400 dark:focus:bg-red-950/40"
+                    onClick={() => setIsHelpDialogOpen(true)}
+                    className="cursor-pointer gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
                   >
-                    <LogOut className="size-4" />
-                    <span>Log out</span>
+                    <HelpCircle className="size-4 text-zinc-500" />
+                    <span>Help & Support</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -291,6 +310,9 @@ export default function AppSidebar({ ...props }) {
 
       {/* Interactive sidebar edge rail to toggle collapse/expand */}
       <SidebarRail />
+
+      {/* Help & Support Dialog */}
+      <HelpSupportDialog open={isHelpDialogOpen} onOpenChange={setIsHelpDialogOpen} />
     </Sidebar>
   );
 }
