@@ -1,33 +1,30 @@
 import React from 'react';
+import { MarginIcon } from '@/new-components';
 
-function Logo({ className = '' }) {
+function Logo({ className = '', showText = true, size = 'default' }) {
+  const iconSizes = {
+    sm: 'size-7',
+    default: 'size-8',
+    lg: 'size-9',
+    xl: 'size-10',
+  };
+
+  const textSizes = {
+    sm: 'text-lg',
+    default: 'text-xl',
+    lg: 'text-2xl',
+    xl: 'text-3xl',
+  };
+
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      {/* Editorial Ink-Quill Minimalist Icon */}
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white shadow-sm transition-transform hover:scale-105 dark:bg-zinc-100 dark:text-zinc-900">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 19l7-7 3 3-7 7-3-3z" />
-          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
-          <path d="M2 2l7.586 7.586" />
-          <circle cx="11" cy="11" r="2" />
-        </svg>
-      </div>
+      <MarginIcon className={`${iconSizes[size] || iconSizes.default} shrink-0 transition-transform hover:scale-105`} />
 
-      <span className="font-editorial text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-        Your
-        <span className="font-sans font-semibold text-zinc-500 dark:text-zinc-400">
-          Blog
+      {showText && (
+        <span className={`font-['Inter',sans-serif] italic ${textSizes[size] || textSizes.default} font-normal text-zinc-900 dark:text-zinc-50 pr-1 select-none`}>
+          Margin
         </span>
-      </span>
+      )}
     </div>
   );
 }

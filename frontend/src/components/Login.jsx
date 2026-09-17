@@ -5,7 +5,7 @@ import { Button, Input, Logo } from './index';
 import { useDispatch } from 'react-redux';
 import authService from '../appwrite/auth';
 import { useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
+import { motion } from "motion/react"
 import { Loader2 } from 'lucide-react';
 
 function Login() {

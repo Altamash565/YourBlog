@@ -8,6 +8,7 @@ export * from './tooltip';
 export * from './input';
 export * from './collapsible';
 export * from './Loader';
+export * from './MarginIcon';
 export * from './theme-toggle';
 export * from './theme-provider';
 export * from './badge';

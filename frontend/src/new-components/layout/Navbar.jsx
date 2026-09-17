@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 
 import authService from '@/appwrite/auth';
 import { logout } from '@/store/authSlice';
+import { MarginIcon } from '../ui/MarginIcon';
 import {
   Button,
   Input,
@@ -158,12 +159,10 @@ export default function Navbar() {
           />
 
           {/* Mobile Logo with Name */}
-          <Link to="/" className="flex items-center gap-2 md:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
-              <BookOpen className="h-3.5 w-3.5" />
-            </div>
-            <span className="font-editorial text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-              YourBlog
+          <Link to="/" className="flex items-center gap-2.5 md:hidden">
+            <MarginIcon className="size-7 rounded-lg" />
+            <span className="font-['Inter',sans-serif] italic text-xl font-normal text-zinc-900 dark:text-zinc-100 pr-1 select-none">
+              Margin
             </span>
           </Link>
 
@@ -275,7 +274,7 @@ export default function Navbar() {
                       {userData?.name || 'Author'}
                     </p>
                     <p className="truncate text-xs leading-none text-zinc-500 dark:text-zinc-400">
-                      {userData?.email || 'author@yourblog.com'}
+                      {userData?.email || 'author@margin.com'}
                     </p>
                   </div>
                 </DropdownMenuLabel>

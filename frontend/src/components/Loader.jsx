@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import React from 'react';
+import { Loading } from '@/new-components';
 
 // Route progress bar disabled across website
 export function RouteProgressBar() {
@@ -9,17 +7,8 @@ export function RouteProgressBar() {
 }
 
 // Center-aligned Loader situated between Header and Footer
-export function GlobalLoader() {
-  return (
-    <div className="flex min-h-[45vh] w-full flex-col items-center justify-center gap-3 py-24">
-      {/* Sleek, thin spinner */}
-      <div className="h-7 w-7 animate-spin rounded-full border-2 border-zinc-200 border-t-zinc-900 dark:border-zinc-800 dark:border-t-zinc-100" />
-      {/* Clean, uppercase typography */}
-      <span className="animate-pulse text-[11px] font-semibold tracking-widest text-zinc-400 uppercase select-none dark:text-zinc-500">
-        Loading
-      </span>
-    </div>
-  );
+export function GlobalLoader(props) {
+  return <Loading {...props} />;
 }
 
 // Skeleton representation of a PostCard

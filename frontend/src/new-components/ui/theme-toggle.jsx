@@ -23,7 +23,14 @@ function ThemeToggle({ className, side = 'bottom' }) {
 
   if (!mounted) {
     return (
-      <Button className={cn('px-2.5', className)} variant="outline" size="icon">
+      <Button
+        className={cn(
+          'h-9 w-9 rounded-lg border-zinc-200/80 bg-transparent text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900',
+          className
+        )}
+        variant="outline"
+        size="icon"
+      >
         <span className="size-5" />
       </Button>
     );
@@ -38,7 +45,10 @@ function ThemeToggle({ className, side = 'bottom' }) {
         <TooltipTrigger asChild>
           <Button
             onClick={() => setTheme(isDark ? 'light' : 'dark')}
-            className={cn('px-2.5 cursor-pointer', className)}
+            className={cn(
+              'h-9 w-9 cursor-pointer rounded-lg border-zinc-200/80 bg-transparent text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800/80 dark:text-zinc-400 dark:hover:bg-zinc-900',
+              className
+            )}
             variant="outline"
             size="icon"
             aria-label={label}

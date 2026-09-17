@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import authService from '@/appwrite/auth';
 import { login } from '@/store/authSlice';
+import { MarginIcon } from '@/new-components';
 import {
   Card,
   CardHeader,
@@ -69,8 +70,8 @@ export default function SignupForm() {
     <div className="w-full max-w-sm sm:max-w-md">
       <Card className="border-zinc-200/80 bg-white shadow-xl shadow-zinc-950/5 dark:border-zinc-800 dark:bg-zinc-900/90 dark:shadow-none">
         <CardHeader className="space-y-2 pb-6 text-center">
-          <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-900 text-white shadow-md transition-transform hover:scale-105 dark:bg-zinc-100 dark:text-zinc-900">
-            <Sparkles className="h-5 w-5" />
+          <div className="mx-auto flex justify-center">
+            <MarginIcon className="size-11 transition-transform hover:scale-105" />
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             Create an account

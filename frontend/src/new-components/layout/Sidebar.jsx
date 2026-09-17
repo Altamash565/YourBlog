@@ -38,6 +38,7 @@ import { Avatar, AvatarFallback } from '@/new-components/ui/avatar';
 import authService from '@/appwrite/auth';
 import { logout } from '@/store/authSlice';
 import { cn } from '@/lib/utils';
+import { MarginIcon } from '../ui/MarginIcon';
 
 export default function AppSidebar({ ...props }) {
   const authStatus = useSelector((state) => state.auth.status);
@@ -70,7 +71,7 @@ export default function AppSidebar({ ...props }) {
 
   const userInitial = userData?.name ? userData.name.trim().charAt(0).toUpperCase() : 'U';
   const userName = userData?.name || 'Creator';
-  const userEmail = userData?.email || 'creator@yourblog.com';
+  const userEmail = userData?.email || 'creator@margin.com';
 
   return (
     <Sidebar
@@ -100,43 +101,35 @@ export default function AppSidebar({ ...props }) {
                 }}
                 onMouseEnter={() => setIsLogoHovered(true)}
                 onMouseLeave={() => setIsLogoHovered(false)}
-                className="group/brand flex w-full items-center gap-2"
+                className="group/brand flex w-full items-center gap-2.5"
               >
-                {/* Logo Box with Hover Toggle Swap (Zero Blue Corner Bleed) */}
-                <div
-                  className={cn(
-                    'relative flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg shadow-xs transition-colors',
-                    isCollapsed && isLogoHovered
-                      ? 'bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
-                      : 'bg-blue-600 text-white group-data-[collapsible=icon]:group-hover/brand:bg-zinc-200 group-data-[collapsible=icon]:group-hover/brand:text-zinc-700 dark:group-data-[collapsible=icon]:group-hover/brand:bg-zinc-800 dark:group-data-[collapsible=icon]:group-hover/brand:text-zinc-200'
-                  )}
-                >
-                  {/* Default: BookOpen logo (Image 1) */}
-                  <BookOpen
+                {/* Logo Box with Hover Toggle Swap */}
+                <div className="relative flex aspect-square size-8 shrink-0 items-center justify-center rounded-lg overflow-hidden">
+                  {/* Default: Margin logo icon */}
+                  <MarginIcon
                     className={cn(
-                      'size-4 transition-all duration-150',
+                      'size-8 transition-all duration-150',
                       isCollapsed && isLogoHovered ? 'hidden' : 'block',
                       'group-data-[collapsible=icon]:group-hover/brand:hidden'
                     )}
                   />
 
-                  {/* On Hover when Collapsed: PanelLeft sidebar toggle icon (Image 2) */}
-                  <PanelLeft
+                  {/* On Hover when Collapsed: PanelLeft sidebar toggle icon */}
+                  <div
                     className={cn(
-                      'size-4 transition-all duration-150',
-                      isCollapsed && isLogoHovered ? 'block' : 'hidden',
-                      'group-data-[collapsible=icon]:group-hover/brand:block'
+                      'size-8 items-center justify-center bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 transition-all duration-150',
+                      isCollapsed && isLogoHovered ? 'flex' : 'hidden',
+                      'group-data-[collapsible=icon]:group-hover/brand:flex'
                     )}
-                  />
+                  >
+                    <PanelLeft className="size-4" />
+                  </div>
                 </div>
 
                 {/* Brand Text - hidden automatically when collapsed */}
-                <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                  <span className="truncate font-semibold text-zinc-900 dark:text-zinc-100">
-                    YourBlog
-                  </span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    Publishing Platform
+                <div className="flex flex-1 items-center text-left group-data-[collapsible=icon]:hidden">
+                  <span className="font-['Inter',sans-serif] italic text-xl font-normal text-zinc-900 dark:text-zinc-100 pr-1 select-none">
+                    Margin
                   </span>
                 </div>
               </Link>

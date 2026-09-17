@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import './App.css';
 import authService from './appwrite/auth';
 import { login, logout, setAuthResolved } from './store/authSlice';
-import { GlobalLoader } from './components';
-import { Navbar, Sidebar } from './new-components';
+import { Navbar, Sidebar, Loading } from './new-components';
 import { SidebarProvider, SidebarInset } from '@/new-components/ui/sidebar';
 import { ThemeToggle } from '@/new-components/ui/theme-toggle';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -50,7 +49,7 @@ function App() {
           <ThemeToggle />
         </div>
         <main className="flex min-h-screen w-full flex-1 items-center justify-center p-4">
-          <Suspense fallback={<GlobalLoader />}>
+          <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
         </main>
@@ -64,7 +63,7 @@ function App() {
       <SidebarInset className="min-w-0 bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
         <Navbar />
         <main className="flex w-full flex-grow flex-col px-4 py-6 sm:px-6 lg:px-8">
-          <Suspense fallback={<GlobalLoader />}>
+          <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
         </main>

@@ -174,7 +174,7 @@ function HomeV2() {
                 No stories published yet
               </h3>
               <p className="mx-auto mt-1 max-w-sm text-sm text-zinc-500 dark:text-zinc-400">
-                Be the first author to publish a story on YourBlog!
+                Be the first author to publish a story on Margin!
               </p>
               <div className="mt-5">
                 <Link

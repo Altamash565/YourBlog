@@ -156,7 +156,7 @@ export default function Post() {
             </Avatar>
             <div>
               <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                Published on YourBlog
+                Published on Margin
               </p>
               <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
                 {post.$createdAt
@@ -231,11 +231,11 @@ export default function Post() {
       <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-6 sm:p-8 dark:border-zinc-800/80 dark:bg-zinc-900/30">
         <div className="flex items-start gap-4">
           <Avatar className="h-12 w-12 border border-zinc-200 dark:border-zinc-800">
-            <AvatarFallback className="text-base font-semibold">YB</AvatarFallback>
+            <AvatarFallback className="text-base font-semibold">M</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
             <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
-              YourBlog Editorial
+              Margin Editorial
             </h4>
             <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
               Independent publishing powered by developers. Thank you for reading and

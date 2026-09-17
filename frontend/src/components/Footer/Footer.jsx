@@ -16,7 +16,7 @@ function Footer() {
               <Logo />
             </Link>
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              &copy; {new Date().getFullYear()} YourBlog. All Rights Reserved.
+              &copy; {new Date().getFullYear()} Margin. All Rights Reserved.
             </p>
           </div>
 

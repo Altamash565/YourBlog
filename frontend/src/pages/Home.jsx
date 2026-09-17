@@ -193,7 +193,7 @@ function Home() {
                             ? featuredPost.content
                                 .replace(/<[^>]*>?/gm, '')
                                 .slice(0, 180) + '...'
-                            : 'Click to read the complete article on YourBlog.'}
+                            : 'Click to read the complete article on Margin.'}
                         </p>
 
                         <div className="mt-6 flex items-center gap-2 text-sm font-medium text-zinc-900 dark:text-zinc-100">
